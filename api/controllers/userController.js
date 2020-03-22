@@ -59,6 +59,13 @@ exports.createUser= async (data)=>{
     }
  
 }
+exports.getUser = async (data) =>{
+    return await db.Users.findOne({
+        where:{id: data.id},
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+    })
+
+}
 exports.updateUser= (data)=>{
     // console.log(data);
     try {

@@ -48,6 +48,34 @@ app.get('/users',function (req, res) {
 
 });
 
+app.get('/user',function(req,res) {
+  try {
+    const users = require('./controllers/userController');
+    users.getUser(req.body).then((result) =>{
+    
+      data = {
+        msg: "ok",
+        code: 200,
+        data: result.dataValues,
+      }
+      res.send(data);
+  
+    });
+    // console.log(users);
+    
+  } catch (error) {
+
+    data = {
+      msg: 'error',
+      code: 500,
+    }
+    
+    res.send(data);
+  }
+
+});
+
+
 app.post('/users',function(req,res) {
   try {
     const users = require('./controllers/userController');
