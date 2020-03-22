@@ -26,50 +26,59 @@ app.get('/users',function (req, res) {
 
   try {
     const users = require('./controllers/userController');
-  
-    users.getAllUsers().then((result) =>{
+    console.log(req);
     
-      data = {
-        msg: result.msg,
-        code: result.code,
-        data: result.data,
-      }
-      res.send(data);
-  
-    });
-    
+    if(!req.body.id){
+      users.getAllUsers().then((result) =>{
+       
+         data = result.map((d) =>{
+            return d.dataValues;
+           });
+         try {
+          r = {
+            msg: "ok",
+            code: 200,
+            data: data,
+          }
+          res.send(r);
+        } catch (error) {
+          data = {
+            msg: "users no found",
+            code: 400,
+            data: error,
+          }
+          res.send(data);
+        }
+      });
+    }else{
+      users.getUser(req.body).then((result) =>{
+         try {
+           // console.log(result);      
+           data = {
+             msg: "ok",
+             code: 200,
+             data: result.dataValues,
+           }
+           res.send(data);
+           
+         } catch (error) {
+           data = {
+             msg: "user no found",
+             code: 400,
+             data: "",
+           }
+           res.send(data);
+         }
+     
+       });
+    }
+      
   } catch (error) {
     data = {
       msg: 'error',
       code: 500,
+      data: error,
     }
-    res.send(data);
-  }
-
-});
-
-app.get('/user',function(req,res) {
-  try {
-    const users = require('./controllers/userController');
-    users.getUser(req.body).then((result) =>{
-    
-      data = {
-        msg: "ok",
-        code: 200,
-        data: result.dataValues,
-      }
-      res.send(data);
-  
-    });
-    // console.log(users);
-    
-  } catch (error) {
-
-    data = {
-      msg: 'error',
-      code: 500,
-    }
-    
     res.send(data);
   }
 

@@ -4,67 +4,50 @@ const db = require('../models');
 
 exports.getAllUsers = async () =>{
         // console.log(db);
-        include = {
+        params = {
             model: db.Users,
             as: 'Users',
             attributes: { exclude: ['createdAt', 'updatedAt'] },
             through: { attributes: [] },
         };
-        try {
-            const data = await db.Users.findAll(include);
-                result = {
-                    msg: "ok",
-                    code: 200,
-                    data,
-                };
-    
-            return result;
-    
-        } catch (error) {
-            result = {
-                msg: "error",
-                code: 500,
-            }
-            return result;
-        }
-    
+        return await db.Users.findAll(params);
     }
 
-exports.createUser= async (data)=>{
-
-    try {
-        const user = await db.Users.create(data);
-
-        if(user instanceof db.Users){
-            result = {
-                msg: "ok user created",
-                code: 200,
-                data,
-            };
-            return result;
-        }else{
-            result = {
-                msg: "error",
-                code: 500,
-            }
-            return result;
-        }
-        
-    } catch (error) {
-        result = {
-            msg: "error",
-            code: 500,
-        }
-        return result;
-    }
- 
-}
 exports.getUser = async (data) =>{
     return await db.Users.findOne({
         where:{id: data.id},
         attributes: { exclude: ['createdAt', 'updatedAt'] },
-    })
+    });
 
+}
+exports.createUser= async (data)=>{
+
+   try {
+      const user = await db.Users.create(data);
+
+      if(user instanceof db.Users){
+         result = {
+               msg: "ok user created",
+               code: 201,
+               data,
+         };
+         return result;
+      }else{
+         result = {
+               msg: "error",
+               code: 400,
+         }
+         return result;
+      }
+      
+   } catch (error) {
+      result = {
+         msg: "error",
+         code: 500,
+      }
+      return result;
+   }
+ 
 }
 exports.updateUser= (data)=>{
     // console.log(data);
@@ -91,7 +74,7 @@ exports.updateUser= (data)=>{
                 result = {
                     msg: "user updated",
                     code: 200,
-                    data,
+                    data: error,
                 };
                 return result;
             })
