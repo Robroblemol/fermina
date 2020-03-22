@@ -3,10 +3,38 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const passportJWT = require('passport-jwt');
+const users = require('./controllers/userController');
 
+// ExtractJwt to help extract the token
+let ExtractJwt = passportJWT.ExtractJwt;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// JwtStrategy which is the strategy for the authentication
+let JwtStrategy = passportJWT.Strategy;
+let jwtOptions = {};
+
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = 'volaverum';
+
+// create our strategy for web token
+let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+   console.log('payload received', jwt_payload);
+   let user = users.getUser({ id: jwt_payload.id });
+   if (user) {
+     next(null, user);
+   } else {
+     next(null, false);
+   }
+ });
+ // use the strategy
+ passport.use(strategy);
+
+ app.use(passport.initialize());
 
 
 app.listen(5000, () => {
@@ -22,11 +50,10 @@ app.get('/',function (req, res) {
     res.send(response);
   });
 
-app.get('/users',function (req, res) {
+app.get('/users',passport.authenticate('jwt', { session: false }),function (req, res) {
 
   try {
-    const users = require('./controllers/userController');
-    console.log(req);
+   //  const users = require('./controllers/userController');
     
     if(!req.body.id){
       users.getAllUsers().then((result) =>{
@@ -85,36 +112,35 @@ app.get('/users',function (req, res) {
 });
 
 
-app.post('/users',function(req,res) {
-  try {
-    const users = require('./controllers/userController');
-    users.createUser(req.body).then((result) =>{
-    
+app.post('/register',function(req,res) {
+   try {
+      users.createUser(req.body).then((result) =>{
+      
       data = {
-        msg: result.msg,
-        code: result.code,
-        data: result.data,
+         msg: result.msg,
+         code: result.code,
+         data: result.data,
       }
       res.send(data);
-  
-    });
-    // console.log(users);
-    
-  } catch (error) {
 
-    data = {
-      msg: 'error',
-      code: 500,
-    }
+      });
+      // console.log(users);
     
-    res.send(data);
-  }
+   } catch (error) {
+      console.log(error);
+      
+      data = {
+         msg: 'error',
+         code: 400,
+      }
+      
+      res.send(data);
+   }
 
 });
 
-app.put('/users', function(req,res){
+app.put('/users',passport.authenticate('jwt', { session: false }) ,function(req,res){
   try {
-    const users = require('./controllers/userController');
     users.updateUser(req.body)
       .then((result) =>{
       res.send(result);
@@ -130,9 +156,8 @@ app.put('/users', function(req,res){
   }
 })
 
-app.delete('/users', function(req,res){
+app.delete('/users',passport.authenticate('jwt', { session: false }), function(req,res){
   try {
-    const users = require('./controllers/userController');
     users.deleteUser(req.body)
       .then((result) =>{
       res.send(result);
@@ -148,7 +173,34 @@ app.delete('/users', function(req,res){
   }
 })
 
-app.get('/profiles',function (req, res) {
+app.post('/login', async function(req, res){
+   const { name, password } = req.body;
+   if(name && password){
+      // we get the user with the name and save 
+      // the resolved promise returned
+      await users.getUser({ name }).then((result) =>{
+         try {
+            let user = result.dataValues;
+            console.log(user);
+            if (user.password === password) {
+               // from now on we’ll identify the user by the id and the id is
+               // the only personalized value that goes into our token
+               let payload = { id: user.id };
+               let token = jwt.sign(payload, jwtOptions.secretOrKey);
+               res.json({ msg: 'ok', code: 200, token: token });
+             } else {
+               res.status(401).json({ msg: 'user or password invalid', code: 401 });
+             }
+            
+         } catch (error) {
+            res.status(401).json({ msg: 'user or password invalid',code: 401 });
+         }
+      });
+      
+   }
+})
+
+app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 
   try {
     const profile = require('./controllers/profileController');
@@ -176,13 +228,11 @@ app.get('/profiles',function (req, res) {
 
 });
 
-
-
-  app.use(function(req, res, next) {
-    response = {
-     error: true, 
-     code: 404, 
-     msg: 'URL no found'
-    };
-    res.status(404).send(response);
-   });
+app.use(function(req, res, next) {
+   response = {
+   error: true, 
+   code: 404, 
+   msg: 'URL no found'
+   };
+   res.status(404).send(response);
+});

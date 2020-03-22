@@ -15,13 +15,14 @@ exports.getAllUsers = async () =>{
 
 exports.getUser = async (data) =>{
     return await db.Users.findOne({
-        where:{id: data.id},
+        where:data,
         attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
 
 }
 exports.createUser= async (data)=>{
-
+   console.log(data);
+   
    try {
       const user = await db.Users.create(data);
 
