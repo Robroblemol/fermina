@@ -184,79 +184,67 @@ app.delete('/users',passport.authenticate('jwt', { session: false }), function(r
 
 app.post('/login', async function(req, res){
    const { name, password } = req.body;
-   if(name && password){
-
-      // we get the user with the name and save 
-      // the resolved promise returned
-      await users.getUser({ name })
-         .then((result) =>{
-            // console.log(result);
-            
-            return user = result.dataValues;
-            
-         })
-         .then(() => {
-            return userpwd = bcrypt.hash(password, 8)
-         })
-         .then((userpwd)=>{
-            console.log(userpwd);
-            console.log(user.password);
-            
-            
-            return bcrypt.compare(password, user.password);
-         })
-         .then(isEqual => {
-            console.log(isEqual); // true
-            if(isEqual){
-               let payload = { id: user.id };
-               let token = jwt.sign(payload, jwtOptions.secretOrKey);
-               res.json({ msg: 'ok', code: 200, token: token });         
-            }else{
-               res.status(401).json(
-                  {  msg: 'user or password invalid',
-                     code: 401,
-                     data:{}
-                  });
-            }
-         }).catch(errors => {
-            console.log(errors);
-            
+    // we get the user with the name and save 
+    // the resolved promise returned
+   await users.getUser({ name })
+      .then((result) =>{
+         return user = result.dataValues;      
+      })
+      .then((user)=>{ 
+         return bcrypt.compare(password, user.password);
+      })
+      .then(isEqual => {
+         console.log(isEqual); // true
+         if(isEqual){
+            let payload = { id: user.id };
+            let token = jwt.sign(payload, jwtOptions.secretOrKey);
+            res.json({ msg: 'ok', code: 200, token: token });         
+         }else{
             res.status(401).json(
-               {  msg: 'user or password invalid',
-                  code: 401,
-                  data:errors 
-               }
-               );
-         });
-      
-   }
+               { 
+               msg: 'user or password invalid',
+               code: 401,
+               data: 'bad request'
+            });
+         }
+      }).catch(errors => {
+         console.log(errors);
+         
+         res.status(401).json(
+         { 
+            msg: 'user or password invalid',
+            code: 401,
+            data:errors.message 
+         }
+         );
+      });
 })
 
 app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 
-  try {
-    const profile = require('./controllers/profileController');
-  
-    profile.then((result) =>{
-    
+   try {
+      const profile = require('./controllers/profileController');
+   
+      profile.then((result) =>{
+      
+         data = {
+         msg: result.msg,
+         code: result.code,
+         data: result.data,
+         }
+         res.send(data);
+   
+      });
+      
+   } catch (error) {
+      console.log(error);
+      
       data = {
-        msg: result.msg,
-        code: result.code,
-        data: result.data,
+         msg: 'error',
+         code: 500,
       }
       res.send(data);
-  
-    });
-    
-  } catch (error) {
-    console.log(error);
-    
-    data = {
-      msg: 'error',
-      code: 500,
-    }
-    res.send(data);
-  }
+   }
 
 });
 

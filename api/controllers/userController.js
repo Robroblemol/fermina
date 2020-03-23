@@ -1,13 +1,14 @@
 // import users from "./models/users";
 
 const db = require('../models');
+const auth = require('./authController');
 
 exports.getAllUsers = async () =>{
         // console.log(db);
         params = {
             model: db.Users,
             as: 'Users',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            attributes: { exclude: ['password','createdAt', 'updatedAt'] },
             through: { attributes: [] },
         };
         return await db.Users.findAll(params);
@@ -24,13 +25,16 @@ exports.createUser= async (data)=>{
    console.log(data);
    
    try {
-      const user = await db.Users.create(data);
+		const hash = await auth.createHash(data.password);// create hash
+		data.password= hash;// set hash in de password attribute
+		console.log(data);
+		const user = await db.Users.create(data);
+		
 
       if(user instanceof db.Users){
          result = {
                msg: "ok user created",
                code: 201,
-               data,
          };
          return result;
       }else{
