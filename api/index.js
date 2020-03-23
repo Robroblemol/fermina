@@ -2,6 +2,7 @@
 // import getAllUsers from "./controllers/users";
 const express = require('express');
 const app = express();
+const bcrypt = require("bcryptjs");
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
@@ -140,20 +141,28 @@ app.post('/register',function(req,res) {
 });
 
 app.put('/users',passport.authenticate('jwt', { session: false }) ,function(req,res){
-  try {
-    users.updateUser(req.body)
-      .then((result) =>{
-      res.send(result);
-  
-    });
-  } catch (error) {
-    data = {
-      msg: 'error',
-      code: 500,
-    }
-    
-    res.send(data);
-  }
+   bcrypt.hash(req.body.password, 8)
+   .then(password => {
+   return password
+   })
+   .then(password =>{
+      data={
+         ...req.body,
+         password: password,
+      }
+      return users.updateUser(data)
+   })
+   .then(result => {
+      res.status(result.code).send(result);
+   })
+   .catch (errors =>{
+      result = {
+         msg: "error",
+         code: 400,
+         data: errors.message,
+   };
+   return result;
+   });
 })
 
 app.delete('/users',passport.authenticate('jwt', { session: false }), function(req,res){
@@ -176,26 +185,49 @@ app.delete('/users',passport.authenticate('jwt', { session: false }), function(r
 app.post('/login', async function(req, res){
    const { name, password } = req.body;
    if(name && password){
+
       // we get the user with the name and save 
       // the resolved promise returned
-      await users.getUser({ name }).then((result) =>{
-         try {
-            let user = result.dataValues;
-            console.log(user);
-            if (user.password === password) {
-               // from now on we’ll identify the user by the id and the id is
-               // the only personalized value that goes into our token
+      await users.getUser({ name })
+         .then((result) =>{
+            // console.log(result);
+            
+            return user = result.dataValues;
+            
+         })
+         .then(() => {
+            return userpwd = bcrypt.hash(password, 8)
+         })
+         .then((userpwd)=>{
+            console.log(userpwd);
+            console.log(user.password);
+            
+            
+            return bcrypt.compare(password, user.password);
+         })
+         .then(isEqual => {
+            console.log(isEqual); // true
+            if(isEqual){
                let payload = { id: user.id };
                let token = jwt.sign(payload, jwtOptions.secretOrKey);
-               res.json({ msg: 'ok', code: 200, token: token });
-             } else {
-               res.status(401).json({ msg: 'user or password invalid', code: 401 });
-             }
+               res.json({ msg: 'ok', code: 200, token: token });         
+            }else{
+               res.status(401).json(
+                  {  msg: 'user or password invalid',
+                     code: 401,
+                     data:{}
+                  });
+            }
+         }).catch(errors => {
+            console.log(errors);
             
-         } catch (error) {
-            res.status(401).json({ msg: 'user or password invalid',code: 401 });
-         }
-      });
+            res.status(401).json(
+               {  msg: 'user or password invalid',
+                  code: 401,
+                  data:errors 
+               }
+               );
+         });
       
    }
 })

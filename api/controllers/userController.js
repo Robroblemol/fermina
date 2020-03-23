@@ -73,9 +73,9 @@ exports.updateUser= (data)=>{
             })
             .catch((error) => {
                 result = {
-                    msg: "user updated",
-                    code: 200,
-                    data: error,
+                    msg: "error",
+                    code: 400,
+                    data: error.message,
                 };
                 return result;
             })
