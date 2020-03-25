@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const users = require('./controllers/userController');
-
+const letters = require('./controllers/letterController');
 // ExtractJwt to help extract the token
 let ExtractJwt = passportJWT.ExtractJwt;
 
@@ -219,6 +219,43 @@ app.post('/login', async function(req, res){
          );
       });
 })
+
+app.post('/letters', passport.authenticate('jwt', { session: false }), function(req,res){
+   
+   letters.createLetters(req.body).then(result => {
+      console.log(result);
+      res.status(result.code).send(result);
+
+   });
+   
+});
+
+app.put('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   letters.updateLetter(req.body).then(result => {
+      console.log(result);
+      res.status(result.code).send(result);
+   })
+});
+
+app.get('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   
+   if(req.body.id){
+      letters.getLetter(req.body.id).then(result => {
+         // console.log(result);
+         res.status(result.code).send(result)
+      })
+   }else if(req.body.userId){
+      letters.getAllLettersByUser(req.body).then(result =>{
+         console.log(result);
+         res.status(result.code).send(result)
+      })
+   }else{
+      letters.getAllLetters(req.body).then(result =>{
+         console.log(result);
+         res.status(result.code).send(result)
+      })
+   }
+});
 
 app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 

@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const letter = sequelize.define('letter', {
-    idUser: DataTypes.INTEGER,
-    addresses: DataTypes.STRING,
-    type:DataTypes.STRING,
-    createAt: DataTypes.DATE,
-    update: DataTypes.DATE,
+    userId: DataTypes.INTEGER,
+    addresse: DataTypes.STRING,
+    type: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   }, {});
   letter.associate = function(models) {
     letter.belongsToMany(models.writings,{
