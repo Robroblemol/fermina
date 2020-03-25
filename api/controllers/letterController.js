@@ -174,11 +174,11 @@ exports.updateLetter = async (data) => {
     }
 }
 exports.deleteLetter = async (data) =>{
-    user = this.getLetter({id:data.id});
-    console.log(user);
+    letter = this.getLetter({id:data.id});
+    console.log(letter);
     try {
-        user = await  db.Users.findOne({where:{id: data.id}});
-        if(!user){
+        letter = await  db.letter.findOne({where:{id: data.id}});
+        if(!letter){
             result = {
                 msg: "error",
                 code: 404,
@@ -186,7 +186,7 @@ exports.deleteLetter = async (data) =>{
             };
         return result;
         }else{
-            return MutationRecord.destroy(data).then(deleteRecord =>{
+            return letter.destroy(data).then(deleteRecord =>{
                 console.log(`delete record ${JSON.stringify(deleteRecord,null,2)}`)
                     result = {
                         msg: "record deleted",

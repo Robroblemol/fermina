@@ -257,6 +257,14 @@ app.get('/letters',passport.authenticate('jwt', { session: false }) ,function(re
    }
 });
 
+app.delete('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   letters.deleteLetter(req.body).then(result =>{
+      console.log(result);
+      res.status(result.code).send(result);
+      
+   })
+})
+
 app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 
    try {
