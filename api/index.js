@@ -9,6 +9,7 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const users = require('./controllers/userController');
 const letters = require('./controllers/letterController');
+const writings = require('./controllers/writingsController')
 // ExtractJwt to help extract the token
 let ExtractJwt = passportJWT.ExtractJwt;
 
@@ -264,6 +265,52 @@ app.delete('/letters',passport.authenticate('jwt', { session: false }) ,function
       
    })
 })
+
+app.post('/writings', passport.authenticate('jwt', { session: false }), function(req,res){
+   
+   writings.create(req.body).then(result => {
+      console.log(result);
+      res.status(result.code).send(result);
+
+   });
+   
+});
+
+app.put('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   writings.update(req.body).then(result => {
+      console.log(result);
+      res.status(result.code).send(result);
+   })
+});
+
+app.get('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   
+   if(req.body.id){
+      writings.get(req.body.id).then(result => {
+         // console.log(result);
+         res.status(result.code).send(result)
+      })
+   }else if(req.body.userId){
+      writings.getAllByUser(req.body).then(result =>{
+         console.log(result);
+         res.status(result.code).send(result)
+      })
+   }else{
+      writings.getAll(req.body).then(result =>{
+         console.log(result);
+         res.status(result.code).send(result)
+      })
+   }
+});
+
+app.delete('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   writings.delete(req.body).then(result =>{
+      console.log(result);
+      res.status(result.code).send(result);
+      
+   })
+})
+
 
 app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 
