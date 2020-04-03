@@ -2,15 +2,13 @@ import React, {useState} from 'react';
 import { View, Text, StyleSheet, FlatList,  Alert} from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import SplashScreen from 'react-native-splash-screen';
 import Header from './Header';
 import ListItem from './ListLetters';
 import AddItem from './AddItem';
 
 const Letters = () => {
 
-    
-    SplashScreen.hide();
+  
     const [items, setItems] = useState([
       {id:  uuidv4(), text: "letter 1"},
       {id:  uuidv4(), text: "letter 2"},
