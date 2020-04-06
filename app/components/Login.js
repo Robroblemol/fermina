@@ -8,6 +8,8 @@ import { View,
         Dimensions
       } from 'react-native';
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
+import { Actions } from 'react-native-router-flux'
+import {authenticateUser} from '../services/auth'
 
 
 
@@ -16,6 +18,28 @@ const {width: WIDTH } = Dimensions.get('window');
 const Login = () => {
 
   const [ showPass, setShowPass ] = useState(true);
+  const [ password, setPass ] = useState('');
+  const [ name, setUser ] = useState('');
+
+  const hadleLogin = async () => {
+    
+
+    const auth = await authenticateUser(
+      Object.assign(
+        {},
+        {name,password}
+      )
+    );
+    
+    if(auth.ok){
+      console.log(auth);
+      Actions.letters();
+    } else {
+      console.log(auth);
+      Alert.alert('Error',auth.problem,[{text: 'ok'}])
+    }
+  }
+
 
   
     return( 
@@ -31,7 +55,8 @@ const Login = () => {
             style= {styles.input}
             placeholder = 'Usuario'
             placeholderTextColor = 'chocolate'
-            underlineColorAndroid = 'transparent'/>
+            underlineColorAndroid = 'transparent'
+            onChangeText = {(textVale) => setUser(textVale)}/>
           <Icon 
             name= {'user'} 
             size= {28} 
@@ -46,7 +71,8 @@ const Login = () => {
             placeholder = 'Contraseña'
             placeholderTextColor = 'chocolate'
             underlineColorAndroid = 'transparent'
-            secureTextEntry= {showPass}/>
+            secureTextEntry= {showPass}
+            onChangeText = {(textVale) => setPass(textVale)}/>
           <Icon 
             name= {'lock'} 
             size= {28} 
@@ -64,7 +90,9 @@ const Login = () => {
           </TouchableOpacity>
 
         </View>
-        <TouchableOpacity style={styles.btnLogin}>
+        <TouchableOpacity 
+          style={styles.btnLogin}
+          onPress={hadleLogin}>
            <Text style= {styles.text}>Ingresar</Text>
           </TouchableOpacity>
        

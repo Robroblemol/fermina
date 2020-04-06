@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@bam.tech/react-native-make": "^2.0.0",
+    "apisauce": "^1.1.1",
+    "lodash.remove": "^4.7.0",
     "react": "16.11.0",
     "react-native": "0.62.0",
     "react-native-gesture-handler": "^1.6.1",
@@ -20,6 +22,8 @@
     "react-native-screens": "^2.4.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-vector-icons": "^6.6.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
     "uuid": "^7.0.3"
   },
   "devDependencies": {

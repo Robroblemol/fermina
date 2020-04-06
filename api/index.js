@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const cors = require('cors');
 const users = require('./controllers/userController');
 const letters = require('./controllers/letterController');
 const writings = require('./controllers/writingsController')
@@ -15,6 +16,7 @@ let ExtractJwt = passportJWT.ExtractJwt;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 // JwtStrategy which is the strategy for the authentication
 let JwtStrategy = passportJWT.Strategy;
