@@ -2,13 +2,16 @@ import React, {useState} from 'react';
 import { View, Text, StyleSheet, FlatList,  Alert} from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header';
 import ListItem from './ListLetters';
 import AddItem from './AddItem';
 
 const Letters = () => {
 
-  
+    const letter = useSelector(state => state);
+    console.log(letter);
+    
     const [items, setItems] = useState([
       {id:  uuidv4(), text: "letter 1"},
       {id:  uuidv4(), text: "letter 2"},

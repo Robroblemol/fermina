@@ -119,11 +119,10 @@ app.get('/users',passport.authenticate('jwt', { session: false }),function (req,
 app.post('/register',function(req,res) {
    try {
       users.createUser(req.body).then((result) =>{
-      
       data = {
          msg: result.msg,
          code: result.code,
-         data: result.data,
+         token: result.token,
       }
       res.send(data);
 
@@ -201,7 +200,7 @@ app.post('/login', async function(req, res){
          if(isEqual){
             let payload = { id: user.id };
             let token = jwt.sign(payload, jwtOptions.secretOrKey);
-            res.json({ msg: 'ok', code: 200, token: token });         
+            res.json({ msg: 'ok', code: 200, id_user: user.id, token: token });         
          }else{
             res.status(401).json(
                { 

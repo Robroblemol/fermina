@@ -35,6 +35,7 @@ exports.createUser= async (data)=>{
          result = {
                msg: "ok user created",
                code: 201,
+               token: hash,
          };
          return result;
       }else{
