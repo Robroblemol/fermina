@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header';
 import ListItem from './ListLetters';
 import AddItem from './AddItem';
+import ModalConfig from './ModalConfig';
 
 const Letters = () => {
 
     const letter = useSelector(state => state);
     console.log(letter);
+    const [ isVisebleModal, setIsVisibleModal] = useState(false);
     
     const [items, setItems] = useState([
       {id:  uuidv4(), text: "letter 1"},
@@ -38,7 +40,13 @@ const Letters = () => {
   
     return(
       <View style= {style.container}>
-        <Header/>
+        <Header 
+          title = {'Lista de Cartas'}
+          onPressButton = {setIsVisibleModal}
+          />
+        <ModalConfig isVisible= {isVisebleModal}
+          setIsVisible = {setIsVisibleModal}
+          />
           <FlatList 
             data = {items}
             renderItem = {({item}) => (

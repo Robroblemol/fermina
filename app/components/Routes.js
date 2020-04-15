@@ -36,7 +36,8 @@ const Routes = () => {
                component = {Letters} 
                title = "Letters" 
                initial = {hasToken}  
-               hideNavBar={true}/>
+               hideNavBar={true}
+               />
             <Scene key = "login" component = {Login} title = "Login" initial = {!hasToken}/>
             <Scene key = "register" component = {Register} title = "Register"/>
          </Scene>
