@@ -7,6 +7,7 @@ import {user,authenticateAction} from '../redux/actions'
 import Letters from './Letters';
 import Login from '../Screms/Login';
 import Register from '../Screms/Register';
+import ScannerQR from '../Screms/ScannerQR';
 
 
 const Routes = () => {
@@ -35,6 +36,12 @@ const Routes = () => {
             <Scene key = "letters" 
                component = {Letters} 
                title = "Letters" 
+               // initial = {hasToken}  
+               hideNavBar={true}
+               />
+            <Scene key = "scannerQr" 
+               component = {ScannerQR} 
+               title = "Scanner QR" 
                initial = {hasToken}  
                hideNavBar={true}
                />
