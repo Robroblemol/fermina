@@ -224,7 +224,7 @@ app.post('/login', async function(req, res){
 
 app.post('/letters', passport.authenticate('jwt', { session: false }), function(req,res){
    
-   letters.createLetters(req.body).then(result => {
+   letters.createLetters(req.query).then(result => {
       console.log(result);
       res.status(result.code).send(result);
 
@@ -233,7 +233,7 @@ app.post('/letters', passport.authenticate('jwt', { session: false }), function(
 });
 
 app.put('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
-   letters.updateLetter(req.body).then(result => {
+   letters.updateLetter(req.query).then(result => {
       console.log(result);
       res.status(result.code).send(result);
    })
@@ -241,18 +241,18 @@ app.put('/letters',passport.authenticate('jwt', { session: false }) ,function(re
 
 app.get('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
    
-   if(req.body.id){
-      letters.getLetter(req.body.id).then(result => {
+   if(req.query.id){
+      letters.getLetter(req.query.id).then(result => {
          // console.log(result);
          res.status(result.code).send(result)
       })
-   }else if(req.body.userId){
-      letters.getAllLettersByUser(req.body).then(result =>{
+   }else if(req.query.userId){
+      letters.getAllLettersByUser(req.query).then(result =>{
          console.log(result);
          res.status(result.code).send(result)
       })
    }else{
-      letters.getAllLetters(req.body).then(result =>{
+      letters.getAllLetters(req.query).then(result =>{
          console.log(result);
          res.status(result.code).send(result)
       })
@@ -260,7 +260,7 @@ app.get('/letters',passport.authenticate('jwt', { session: false }) ,function(re
 });
 
 app.delete('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
-   letters.deleteLetter(req.body).then(result =>{
+   letters.deleteLetter(req.query).then(result =>{
       console.log(result);
       res.status(result.code).send(result);
       
@@ -269,7 +269,7 @@ app.delete('/letters',passport.authenticate('jwt', { session: false }) ,function
 
 app.post('/writings', passport.authenticate('jwt', { session: false }), function(req,res){
    
-   writings.create(req.body).then(result => {
+   writings.create(req.query).then(result => {
       console.log(result);
       res.status(result.code).send(result);
 
@@ -278,7 +278,7 @@ app.post('/writings', passport.authenticate('jwt', { session: false }), function
 });
 
 app.put('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
-   writings.update(req.body).then(result => {
+   writings.update(req.query).then(result => {
       console.log(result);
       res.status(result.code).send(result);
    })
@@ -306,7 +306,7 @@ app.get('/writings',passport.authenticate('jwt', { session: false }) ,function(r
 });
 
 app.delete('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
-   writings.delete(req.body).then(result =>{
+   writings.delete(req.query).then(result =>{
       console.log(result);
       res.status(result.code).send(result);
       

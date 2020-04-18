@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, Linking, TouchableHighlight, PermissionsAndroid, Platform, StyleSheet, Alert} from 'react-native';
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
+import { Actions } from 'react-native-router-flux'
 import { getWritings } from '../../services/writings';
 const ScannerQR = () => {
     const [qrvalue, setQrvalue] = useState('');
@@ -18,17 +19,19 @@ const ScannerQR = () => {
             const index = qrvalue.search('letterId');
             const id = parseInt(qrvalue.slice(index+9));
             console.log( qrvalue.slice(index+9));
-            const writings = await getWritings(
+            const writing = await getWritings(
                 token,
-                Object.assign(
-                    {},
-                    {id} 
-                ),
-                
-
+                {id} 
             );
-            console.log(writings);
-            
+            if (writing.ok){
+              console.log(writing);
+              // Actions.push('writing',{...writing.data})
+              Actions.writing({data: writing.data.data});
+           }
+           else {
+            console.log(writing);
+            Alert.alert('Error',writing.problem,[{text: 'ok'}])
+          }
         }
         // console.log(qrvalue.search('writings?letterId='));
         
