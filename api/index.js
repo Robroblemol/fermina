@@ -285,19 +285,20 @@ app.put('/writings',passport.authenticate('jwt', { session: false }) ,function(r
 });
 
 app.get('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
+   console.log(req.query);
    
-   if(req.body.id){
+   if(req.query.id){
       writings.get(req.body.id).then(result => {
-         // console.log(result);
+         console.log(result);
          res.status(result.code).send(result)
       })
-   }else if(req.body.userId){
+   }else if(req.query.userId){
       writings.getAllByUser(req.body).then(result =>{
          console.log(result);
          res.status(result.code).send(result)
       })
    }else{
-      writings.getAll(req.body).then(result =>{
+      writings.getAll(req.query).then(result =>{
          console.log(result);
          res.status(result.code).send(result)
       })

@@ -1,14 +1,38 @@
 import React, {useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, Linking, TouchableHighlight, PermissionsAndroid, Platform, StyleSheet, Alert} from 'react-native';
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
-
+import { getWritings } from '../../services/writings';
 const ScannerQR = () => {
     const [qrvalue, setQrvalue] = useState('');
     const [opneScanner, setOpneScanner] = useState(false);
 
-   const onOpenlink = () => {
+     const reducers = useSelector(state => state);
+     const token = reducers.authReducer.token;
+    console.log(token);
+
+   const onOpenlink = async () => {
         //Function to open URL, If scanned 
-        Linking.openURL(this.state.qrvalue);
+        console.log(qrvalue.search('writings?'));
+        if(qrvalue.search('writings?')){
+            const index = qrvalue.search('letterId');
+            const id = parseInt(qrvalue.slice(index+9));
+            console.log( qrvalue.slice(index+9));
+            const writings = await getWritings(
+                token,
+                Object.assign(
+                    {},
+                    {id} 
+                ),
+                
+
+            );
+            console.log(writings);
+            
+        }
+        // console.log(qrvalue.search('writings?letterId='));
+        
+        // Linking.openURL(qrvalue);
         //Linking used to open the URL in any browser that you have installed
     }
     const onBarcodeScan = (qrvalue) => {
@@ -74,6 +98,8 @@ const ScannerQR = () => {
          return (
         <View style={{ flex: 1 }}>
             <CameraKitCameraScreen
+            actions={{ rightButtonText: 'Done', leftButtonText: 'Cancel' }}
+            onBottonButtonPressed = {(event) => console.log(event)}
             showFrame={false}
             //Show/hide scan frame
             scanBarcode={true}
@@ -102,8 +128,9 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#2c3539',
-    padding: 10,
+    backgroundColor: '#FCAC17',
+    borderRadius: 45,
+    padding: 9,
     width:300,
     marginTop:16
   },
