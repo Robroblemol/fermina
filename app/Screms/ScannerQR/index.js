@@ -16,23 +16,23 @@ const ScannerQR = () => {
         //Function to open URL, If scanned 
         console.log(qrvalue.search('writings?'));
         if(qrvalue.search('writings?')){
-            const index = qrvalue.search('letterId');
-            const id = parseInt(qrvalue.slice(index+9));
-            console.log( qrvalue.slice(index+9));
+            const index = qrvalue.search('id=');
+            const id = parseInt(qrvalue.slice(index+3));
+            console.log(qrvalue.slice(index+3));
             const writing = await getWritings(
                 token,
                 {id} 
             );
             if (writing.ok){
-              console.log(writing);
+              // console.log(writing);
               // Actions.push('writing',{...writing.data})
-              Actions.writing({data: writing.data.data});
+              Actions.writing(writing.data.data);
            }
            else {
             console.log(writing);
             Alert.alert('Error',writing.problem,[{text: 'ok'}])
           }
-        }
+        } 
         // console.log(qrvalue.search('writings?letterId='));
         
         // Linking.openURL(qrvalue);

@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     mailer: DataTypes.STRING,
     body: DataTypes.TEXT,
+    like: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   }, {});

@@ -277,8 +277,8 @@ app.post('/writings', passport.authenticate('jwt', { session: false }), function
    
 });
 
-app.put('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){
-   writings.update(req.query).then(result => {
+app.put('/writings',passport.authenticate('jwt', { session: false }) ,function(req,res){   
+   writings.update(req.body).then(result => {
       console.log(result);
       res.status(result.code).send(result);
    })
@@ -288,12 +288,12 @@ app.get('/writings',passport.authenticate('jwt', { session: false }) ,function(r
    console.log(req.query);
    
    if(req.query.id){
-      writings.get(req.body.id).then(result => {
+      writings.get(req.query).then(result => {
          console.log(result);
          res.status(result.code).send(result)
       })
    }else if(req.query.userId){
-      writings.getAllByUser(req.body).then(result =>{
+      writings.getAllByUser(req.query).then(result =>{
          console.log(result);
          res.status(result.code).send(result)
       })

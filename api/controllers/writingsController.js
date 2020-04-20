@@ -41,6 +41,8 @@ exports.getAll = async () => {
 exports.get = async (data) => {
     try {
         return await db.writings.findOne({
+            model: db.writings,
+            as: 'writings',
             where:data,
             attributes: { exclude: ['createdAt', 'updatedAt'] },
         }).then(writing => {
@@ -141,6 +143,8 @@ exports.update = async (data) => {
         if(!writing.msg === 'error'){
             throw new Error('No record found');
         }else{
+            console.log(writing);
+            
             return writing.data.update(data)
                 .then(updatedRecord=>{
                     console.log(`updated record ${JSON.stringify(updatedRecord,null,2)}`)
