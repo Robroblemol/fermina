@@ -4,6 +4,7 @@ import { Text, View, Linking, TouchableHighlight, PermissionsAndroid, Platform, 
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
 import { Actions } from 'react-native-router-flux'
 import { getWritings } from '../../services/writings';
+import CardView from 'react-native-cardview'
 const ScannerQR = () => {
     const [qrvalue, setQrvalue] = useState('');
     const [opneScanner, setOpneScanner] = useState(false);
@@ -77,14 +78,22 @@ const ScannerQR = () => {
 
         return (
              <View style={styles.container}>
-            <Text style={styles.heading}>React Native QR Code Example</Text>
-            <Text style={styles.simpleText}>{qrvalue ? 'Scanned QR Code: '+qrvalue : ''}</Text>
+            
+            
             {qrvalue.includes("http") ? 
+            <CardView
+            style={styles.cardView}
+            cardElevation={4}
+            cardMaxElevation={2}
+            cornerRadius={5}>
+              <Text style={styles.simpleText}>QR leido!</Text>
               <TouchableHighlight
                 onPress={() => onOpenlink()}
-                style={styles.button}>
-                  <Text style={{ color: '#FFFFFF', fontSize: 12 }}>Open Link</Text>
+                style={styles.buttonCardView}>
+                  <Text style={{ color: '#FFFFFF', fontSize: 12 }}>Abrir carta</Text>
               </TouchableHighlight>
+
+            </CardView>
               : null
             }
             <TouchableHighlight
@@ -137,6 +146,21 @@ const styles = StyleSheet.create({
     width:300,
     marginTop:16
   },
+  buttonCardView: {
+    alignItems: 'center',
+    backgroundColor: '#FCAC17',
+    borderRadius: 45,
+    padding: 9,
+    width:250,
+    marginTop:16,
+    marginBottom: 8,
+  },
+  cardView:{
+    backgroundColor: '#F4DFB8',
+    borderColor: 'chocolate',
+    padding:10,
+    borderWidth: 10,
+  },
   heading: { 
     color: 'black', 
     fontSize: 24, 
@@ -145,7 +169,7 @@ const styles = StyleSheet.create({
     marginTop: 30 
   },
   simpleText: { 
-    color: 'black', 
+    color: 'chocolate', 
     fontSize: 20, 
     alignSelf: 'center', 
     padding: 10, 
