@@ -2,6 +2,7 @@ export default {
 	endpoints: {
 		auth: '/login',
 		register: '/register',
-		writings: '/writings'
+		writings: '/writings',
+		like:'/likesWriting'
 	}
 };

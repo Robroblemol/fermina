@@ -13,6 +13,7 @@
     "@bam.tech/react-native-make": "^2.0.0",
     "apisauce": "^1.1.1",
     "lodash.remove": "^4.7.0",
+    "ramda": "^0.27.0",
     "react": "16.11.0",
     "react-native": "0.62.0",
     "react-native-camera-kit": "^8.0.4",

@@ -11,20 +11,19 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE,
   }, {});
   writings.associate = function(models) {
-  writings.belongsTo(models.letter,{
-      as:'lettersWritings',
-      foreignKey: 'letterId'
-    });
-  writings.belongsTo(models.Users,{
-    as:'onwer',
-    foreignKey: 'userId'
-  })
-  writings.belongsToMany(models.Users,
-    {through: 'likesWritings', 
-    foreignKey: 'writingId',
-    as: 'likes'
-  })
-    // associations can be defined here
+    writings.belongsTo(models.letter,{
+        as:'lettersWritings',
+        foreignKey: 'letterId'
+      });
+    writings.belongsTo(models.Users,{
+      as:'onwer',
+      foreignKey: 'userId'
+    })
+    writings.belongsToMany(models.Users,
+      {through: 'likesWritings', 
+      foreignKey: 'writingId',
+      as: 'likes'
+    })
   };
   return writings;
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, 
     SafeAreaView,
     ScrollView,
@@ -13,41 +13,54 @@ import { View,
   import { useSelector, useDispatch } from 'react-redux';
   import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
   import { Actions } from 'react-native-router-flux';
-  import { updateWritings } from '../../services/writings';
+  import { setLikeWriting, deleteLikeWriting } from '../../services/writings';
+  import { map } from 'ramda'
 
   const Writing = (writing) => {
-    console.log(writing);
+    console.log(writing.likes);
+    const reducers = useSelector(state => state);
+    const token = reducers.authReducer.token;
+    const userId = reducers.authReducer.user;
+
     const body = writing.body.replace(/<br>/gi,'\n\n')
     const [like, setLike]= useState(false);
     const [countLikes, setCountLikes] =useState(parseInt(writing.like));
-    const reducers = useSelector(state => state);
-    const token = reducers.authReducer.token;
 
-    const hadleLike = async () => {
+    useEffect(() =>{
+      map((l) =>{
+        l.id == userId ? setLike(true): setLike(false);
+  
+      },writing.likes)
 
-      console.log(countLikes);
-      
-      like ? setCountLikes(countLikes+1): setCountLikes(countLikes-1);
+    },[]);
     
+
+    const hadleLike = async () => { 
       
-     const updateWriting = await updateWritings(
+     const slike = !like ? await setLikeWriting(
         token, 
         {
-          id: writing.id,
-          like:  countLikes, 
+          userId,
+          writingId: writing.id, 
         }
-       );
-      if(updateWriting.ok){
-        console.log(updateWriting);
+       ):await deleteLikeWriting(
+        token, 
+        {
+          userId,
+          writingId: writing.id, 
+        }
+       )
+      if(slike.ok){
+        console.log(slike);
         
         setLike(!like); 
         Alert.alert(
           !like ?'Te gusta!!': 'No te gusta.',
           !like ?'Me gusta que te guste!':'Entiendo.',[{text: 'ok'}])
       }else{
-        console.log(updateWriting);
+        console.log(slike);
         
-        Alert.alert('Error',updateWriting.problem,[{text: 'ok'}])
+        Alert.alert('Error',slike.problem,[{text: 'ok'}])
       }
     }
     

@@ -317,7 +317,7 @@ app.post('/likesWriting',passport.authenticate('jwt', { session: false }), funct
    console.log(req.body);
    console.log(req.query);
    
-   writings.setLikes(req.query).then(result =>{
+   writings.setLikes(req.body).then(result =>{
       console.log(result);
       res.status(result.code).send(result);
    })
