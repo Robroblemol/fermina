@@ -313,6 +313,31 @@ app.delete('/writings',passport.authenticate('jwt', { session: false }) ,functio
    })
 })
 
+app.post('/likesWriting',passport.authenticate('jwt', { session: false }), function(req,res){
+   console.log(req.body);
+   console.log(req.query);
+   
+   writings.setLikes(req.query).then(result =>{
+      console.log(result);
+      res.status(result.code).send(result);
+   })
+})
+
+app.delete('/likesWriting',passport.authenticate('jwt', { session: false }), function(req,res){
+      try {
+         writings.deleteLike(req.body)
+            .then((result) =>{
+               res.send(result);
+            })
+      } catch (error) {
+         data = {
+               msg: 'error',
+               code: 500,
+            }        
+          res.send(data);
+      }
+   }
+)
 
 app.get('/profiles',passport.authenticate('jwt', { session: false }),function (req, res) {
 

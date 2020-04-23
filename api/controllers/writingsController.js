@@ -46,7 +46,7 @@ exports.get = async (data) => {
             where:data,
             attributes: { exclude: ['createdAt', 'updatedAt'] },
         }).then(writing => {
-            
+        //  isLiked = await this.getLikes({idUser:data.idUser})  ; 
             result = {
                 msg: 'ok',
                 code: 200,
@@ -208,3 +208,98 @@ exports.delete = async (data) =>{
         return result;
     }
 }
+exports.setLikes = async(data) =>{
+    const likesWriting = await db.likesWriting.create(data);
+    try {
+        if(likesWriting instanceof db.likesWriting){
+            result = {
+                msg: "like created",
+                code: 201,
+          };
+          return result;
+        }else{
+            result = {
+                  msg: "error",
+                  code: 400,
+            }
+            return result;
+         }
+        
+    } catch (error) {
+        result = {
+            msg: "error",
+            code: 500,
+         }
+         return result;
+    }
+}
+
+exports.getLikes = async(data) =>{
+    try {
+        return await db.likesWriting.findOne({
+            model: db.likesWriting,
+            as: 'likesWriting',
+            where:data,
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+        }).then(likesWriting => {
+            
+            result = {
+                msg: 'ok',
+                code: 200,
+                data:likesWriting,
+            }
+            return result;
+        }).catch (errors =>{
+            result = {
+               msg: "error",
+               code: 400,
+               data: errors.message,
+         };
+         return result;
+         });
+    } catch (error) {
+        console.log(error);
+        
+        result = {
+            msg: "error",
+            code: 500,
+        }
+        return result;
+    }
+    
+}
+exports.deleteLike = async (data) =>{
+    // like = await this.getlikes({id:data.id});
+    console.log(data);
+    try {
+        like = await  db.likesWriting.findOne({where: data});
+        console.log('like= '+like);
+        
+        if(!like){
+            result = {
+                msg: "error",
+                code: 404,
+                data,
+            };
+        return result;
+        }else{
+            return like.destroy(data).then(deleteRecord =>{
+                console.log(`delete record ${JSON.stringify(deleteRecord,null,2)}`)
+                    result = {
+                        msg: "record deleted",
+                        code: 200,
+                        data,
+                    };
+                    return result;
+            })
+        }
+    } catch (error) {
+        result = {
+            msg: "error",
+            code: 500,
+            data:error,
+        };
+        return result;
+    }
+}
+
