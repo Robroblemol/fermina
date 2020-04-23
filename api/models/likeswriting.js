@@ -5,7 +5,12 @@ module.exports = (sequelize, DataTypes) => {
     writingId: DataTypes.INTEGER
   }, {});
   likesWriting.associate = function(models) {
-    // associations can be defined here
+    likesWriting.belongsTo(models.Users,{
+      foreignKey: 'userId'
+    });
+    likesWriting.belongsTo(models.writings,{
+      foreignKey: 'writingId'
+    })
   };
   return likesWriting;
 };

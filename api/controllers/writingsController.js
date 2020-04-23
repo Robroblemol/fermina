@@ -6,6 +6,7 @@ exports.getAll = async () => {
         as: 'writings',
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         through: { attributes: [] },
+        include: 'lettersWritings',
     };
     try {
         return await db.writings.findAll(params).then(writings =>{
@@ -44,7 +45,9 @@ exports.get = async (data) => {
             model: db.writings,
             as: 'writings',
             where:data,
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            attributes: { exclude: ['createdAt', 'updatedAt','password'] },
+            include: ['lettersWritings','likes'],
+
         }).then(writing => {
         //  isLiked = await this.getLikes({idUser:data.idUser})  ; 
             result = {
@@ -81,6 +84,8 @@ exports.getAllByUser = async (id) => {
                 as: 'writing',
                 exclude: ['createdAt', 'updatedAt'] },
                 through: { attributes: [] },
+                // include: 'lettersWritings',
+                include: 'onwer',
         }).then(writings => {
             data = writings.map((d) => {
                 return d.dataValues;
