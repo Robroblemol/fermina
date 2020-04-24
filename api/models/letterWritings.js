@@ -1,13 +1,19 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const letter_writings = sequelize.define('letter_writings', {
-    idLetter: DataTypes.INTEGER,
-    idWriting: DataTypes.INTEGER,
-    createAt: DataTypes.DATE,
-    update: DataTypes.DATE,
+    letterId: DataTypes.INTEGER,
+    writingId: DataTypes.INTEGER,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   }, {});
   letter_writings.associate = function(models) {
-    // associations can be defined here
+    letter_writings.belongsTo(models.letter,{
+      foreignKey: 'letterId'
+    });
+    letter_writings.belongsTo(models.writings,{
+      foreignKey: 'writingId'
+    });
+
   };
   return letter_writings;
 };

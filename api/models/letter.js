@@ -8,12 +8,16 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE,
   }, {});
   letter.associate = function(models) {
+    letter.belongsTo(models.Users,{
+      as:'onwer',
+      foreignKey: 'userId'
+    });
     letter.belongsToMany(models.writings,{
       through: 'letter_writings',
       as:'lettersWritings',
-      foreignKey: 'idWriting'
-    })
-    // associations can be defined here
+      foreignKey: 'writingId'
+    }); 
+
   };
   return letter;
 };

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addConstraint('letter_writings', ['writtenId'], {
+    return queryInterface.addConstraint('letter_writings', ['writingId'], {
       type: 'FOREIGN KEY',
       name: 'FK_idWritings_letter_writings',
       references: {

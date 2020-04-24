@@ -1,5 +1,3 @@
-// import express from 'express';
-// import getAllUsers from "./controllers/users";
 const express = require('express');
 const app = express();
 const bcrypt = require("bcryptjs");

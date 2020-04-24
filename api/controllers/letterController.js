@@ -6,6 +6,7 @@ exports.getAllLetters = async () => {
         as: 'letter',
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         through: { attributes: [] },
+        include: 'lettersWritings'
     };
     try {
         return await db.letter.findAll(params).then(letters =>{

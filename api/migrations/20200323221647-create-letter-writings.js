@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      writtenId: {
+      writingId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

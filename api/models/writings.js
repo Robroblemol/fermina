@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     writings.belongsTo(models.Users,{
       as:'onwer',
       foreignKey: 'userId'
-    })
+    });
     writings.belongsToMany(models.Users,
       {through: 'likesWritings', 
       foreignKey: 'writingId',
       as: 'likes'
-    })
+    });
   };
   return writings;
 };
