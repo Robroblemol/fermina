@@ -41,9 +41,16 @@ exports.getAllLetters = async () => {
 }
 exports.getLetter = async (data) => {
     try {
+        console.log('letter');
+        
+        console.log(data);
+        
         return await db.letter.findOne({
+            model: db.letter,
             where:data,
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            attributes: { exclude: ['createdAt', 'updatedAt']},
+            through: { attributes: ['createdAt', 'updatedAt'] },
+            include: 'lettersWritings',
         }).then(letter => {
             
             result = {
@@ -53,6 +60,8 @@ exports.getLetter = async (data) => {
             }
             return result;
         }).catch (errors =>{
+            console.log(errors);
+            
             result = {
                msg: "error",
                code: 400,
@@ -71,15 +80,16 @@ exports.getLetter = async (data) => {
     }
     
 }
-exports.getAllLettersByUser = async (id) => {
+exports.getAllLettersByUser = async (data) => {
     try {
         return await db.letter.findAll({
-            where: id,
+            where: data,
             attributes: { 
                 model: db.letter,
                 as: 'letter',
                 exclude: ['createdAt', 'updatedAt'] },
                 through: { attributes: [] },
+                include: 'lettersWritings',
         }).then(letters => {
             data = letters.map((d) => {
                 return d.dataValues;

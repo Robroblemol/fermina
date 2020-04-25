@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     letter.belongsToMany(models.writings,{
       through: 'letter_writings',
       as:'lettersWritings',
-      foreignKey: 'writingId'
+      foreignKey: 'letterId'
     }); 
 
   };

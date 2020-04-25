@@ -222,7 +222,7 @@ app.post('/login', async function(req, res){
 
 app.post('/letters', passport.authenticate('jwt', { session: false }), function(req,res){
    
-   letters.createLetters(req.query).then(result => {
+   letters.createLetters(req.body).then(result => {
       console.log(result);
       res.status(result.code).send(result);
 
@@ -240,7 +240,7 @@ app.put('/letters',passport.authenticate('jwt', { session: false }) ,function(re
 app.get('/letters',passport.authenticate('jwt', { session: false }) ,function(req,res){
    
    if(req.query.id){
-      letters.getLetter(req.query.id).then(result => {
+      letters.getLetter(req.query).then(result => {
          // console.log(result);
          res.status(result.code).send(result)
       })

@@ -1,12 +1,13 @@
 const db = require('../models');
 
-exports.getAll = async () => {
+exports.getAll = async (data) => {
     params = {
+        where: data,
         model: db.writings,
         as: 'writings',
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         through: { attributes: [] },
-        include: 'lettersWritings',
+        include: ['lettersWritings','likes'],
     };
     try {
         return await db.writings.findAll(params).then(writings =>{
@@ -45,7 +46,7 @@ exports.get = async (data) => {
             model: db.writings,
             as: 'writings',
             where:data,
-            attributes: { exclude: ['createdAt', 'updatedAt','password'] },
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: ['lettersWritings','likes'],
 
         }).then(writing => {
