@@ -1,21 +1,35 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState}from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TouchableOpacity, 
+  StatusBar
+} from 'react-native';
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
-const Header = ({title, onPressButton}) => {
+import ModalConfig from './ModalConfig'
+const Header = ({title}) => {
+  const [showModal, setShowModal]= useState(false);
   return(
     <View style= {styles.header}>
+      <StatusBar backgroundColor={'chocolate'}/>
       <Text style = {styles.text}>{title}</Text>
-      <TouchableOpacity >
+      <TouchableOpacity 
+        onPress = {() => setShowModal(true)}
+      >
         <View>
           <Icon style = {styles.icon}
             name = "bars"
             size = {30}
             color = "#fff"
-            onPress = {() => onPressButton(true)}
+            
           />
         </View>
       </TouchableOpacity>
-    
+      <ModalConfig
+        isVisible={showModal}
+        setIsVisible={setShowModal}
+      />
     </View>
   );
 }

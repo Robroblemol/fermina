@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage,StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import { Router, Scene } from 'react-native-router-flux';
 import SplashScreen from 'react-native-splash-screen';
 import {user,authenticateAction} from '../redux/actions'
+import HomeTab from './HomeTab';
+import ScannerTab from './ScannerTab';
+import CreateTab from './CreateTab';
 import Letters from './Letters';
-import Login from '../Screms/Login';
-import Register from '../Screms/Register';
-import ScannerQR from '../Screms/ScannerQR';
-import  Writing  from '../Screms/Writing'
-import Letter from '../Screms/Letter';
+import Login from '../screens/Login';
+import Register from '../screens/Register';
+import ScannerQR from '../screens/ScannerQR';
+import  Writing  from '../screens/Writing'
+import Letter from '../screens/Letter';
+import Home from '../screens/Home'
+import Header from './Header';
 
 
 const Routes = () => {
@@ -34,19 +39,36 @@ const Routes = () => {
    
     return(
       <Router>
-         <Scene key = "root">
-            <Scene key = "letters" 
-               component = {Letters} 
-               title = "Letters" 
-               // initial = {hasToken}  
-               hideNavBar={true}
-               />
-            <Scene key = "scannerQr" 
-               component = {ScannerQR} 
-               title = "Scanner QR" 
-               initial = {hasToken}  
-               hideNavBar={true}
-               />
+         <Scene 
+            key = "root" 
+            hideNavBar={true}
+            tabBarStyle={styles.tabBar}
+            >
+            
+            <Scene tabs={true}>
+               <Scene key = "home" 
+                  component = {Home} 
+                  initial = {hasToken}  
+                  navBar ={Header}
+                  icon ={HomeTab}
+                  title = "Inicio" 
+                  />
+               <Scene key = "scannerQr" 
+                  component = {ScannerQR} 
+                  title = "Scanner QR"   
+                  hideNavBar={true}
+                  icon = {ScannerTab}
+                  />
+               <Scene key = "letters" 
+                  component = {Letters} 
+                  title = "Letters"  
+                  hideNavBar={true}
+                  icon = {CreateTab}
+                  />
+
+         </Scene>
+
+            
             <Scene key = "writing" 
                component = {Writing} 
                title = "Escritos"  
@@ -64,4 +86,15 @@ const Routes = () => {
     );
    
 }
+const styles = StyleSheet.create({
+   tabBar: {
+      height: 70,
+      borderTopColor: '#FCAC17',
+      borderTopWidth: 2,
+      backgroundColor: '#F4DFB8',
+      opacity: 0.98,
+      justifyContent:'space-between'
+      }
+   });
+
 export default Routes

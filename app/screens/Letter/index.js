@@ -33,7 +33,6 @@ const Letter = (letters) => {
                         open = {openWriting}
                         setLike ={setLike}
                         like = {false}
-                        // deleteItem= {deleteItem}/>
                     />
                   )}
             />
