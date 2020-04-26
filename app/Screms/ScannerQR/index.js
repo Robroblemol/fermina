@@ -1,48 +1,48 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Text, View, Linking, TouchableHighlight, PermissionsAndroid, Platform, StyleSheet, Alert} from 'react-native';
+import { Text, View, TouchableHighlight, PermissionsAndroid, Platform, StyleSheet, Alert} from 'react-native';
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
 import { Actions } from 'react-native-router-flux'
 import { getWritings } from '../../services/writings';
 import CardView from 'react-native-cardview'
 const ScannerQR = () => {
-    const [qrvalue, setQrvalue] = useState('');
-    const [opneScanner, setOpneScanner] = useState(false);
-
+    const [ qrvalue, setQrvalue ] = useState('');
+    const [ opneScanner, setOpneScanner ] = useState(false);
+    const [ addresse, setAddress ] = useState('');
+    const [ dataLetter, setDataLetter ] = useState({});
+ 
      const reducers = useSelector(state => state);
      const token = reducers.authReducer.token;
     console.log(token);
 
    const onOpenlink = async () => {
-        //Function to open URL, If scanned 
-        console.log(qrvalue.search('writings?'));
-        if(qrvalue.search('writings?')){
-            const index = qrvalue.search('id=');
-            const id = parseInt(qrvalue.slice(index+3));
-            console.log(qrvalue.slice(index+3));
-            const writing = await getWritings(
-                token,
-                {id} 
-            );
-            if (writing.ok){
-              // console.log(writing);
-              // Actions.push('writing',{...writing.data})
-              Actions.writing(writing.data.data);
-           }
-           else {
-            console.log(writing);
-            Alert.alert('Error',writing.problem,[{text: 'ok'}])
-          }
-        } 
-        // console.log(qrvalue.search('writings?letterId='));
-        
-        // Linking.openURL(qrvalue);
-        //Linking used to open the URL in any browser that you have installed
-    }
-    const onBarcodeScan = (qrvalue) => {
+    //Function to open URL, If scanned      
+    Actions.writing(dataLetter);
 
-        setOpneScanner(false);
-        setQrvalue(qrvalue);
+    }
+    const onBarcodeScan = async (qrvalue) => {
+      if(qrvalue.search('writings?')){
+        const index = qrvalue.search('id=');
+        const id = parseInt(qrvalue.slice(index+3));
+        console.log(qrvalue.slice(index+3));
+        const writing = await getWritings(
+            token,
+            {id} 
+        );
+        if (writing.ok){
+          console.log(writing.data.data.lettersWritings.addresse);
+          setAddress(writing.data.data.lettersWritings.addresse)
+          setOpneScanner(false);
+          setQrvalue(qrvalue);
+          setDataLetter(writing.data.data);
+       }
+       else {
+        console.log(writing);
+        Alert.alert('Error',writing.problem,[{text: 'ok'}])
+      }
+    } 
+       
+
     }
     const onOpenScanner = ()=> {
        if(Platform.OS === 'android'){
@@ -87,6 +87,7 @@ const ScannerQR = () => {
             cardMaxElevation={2}
             cornerRadius={5}>
               <Text style={styles.simpleText}>QR leido!</Text>
+              <Text style={styles.simpleText}>Destinatario: {addresse}</Text>
               <TouchableHighlight
                 onPress={() => onOpenlink()}
                 style={styles.buttonCardView}>
