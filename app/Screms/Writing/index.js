@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { View, 
+import {  
     SafeAreaView,
     ScrollView,
     Text, 
     StyleSheet, 
     TouchableOpacity, 
-    TextInput,
     Alert,
-    Dimensions,
-    AsyncStorage
+
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
   import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
@@ -24,7 +22,7 @@ import { View,
 
     const body = writing.body.replace(/<br>/gi,'\n\n')
     const [like, setLike]= useState(false);
-    const [countLikes, setCountLikes] =useState(parseInt(writing.like));
+
 
     useEffect(() =>{
       map((l) =>{

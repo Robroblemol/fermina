@@ -9,6 +9,7 @@ import Login from '../Screms/Login';
 import Register from '../Screms/Register';
 import ScannerQR from '../Screms/ScannerQR';
 import  Writing  from '../Screms/Writing'
+import Letter from '../Screms/Letter';
 
 
 const Routes = () => {
@@ -49,6 +50,11 @@ const Routes = () => {
             <Scene key = "writing" 
                component = {Writing} 
                title = "Escritos"  
+               hideNavBar={true}
+               />
+             <Scene key = "letter" 
+               component = {Letter} 
+               title = "Cartas"  
                hideNavBar={true}
                />
             <Scene key = "login" component = {Login} title = "Login" initial = {!hasToken}/>

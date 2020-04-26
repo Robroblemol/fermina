@@ -4,12 +4,14 @@ import { Text, View, TouchableHighlight, PermissionsAndroid, Platform, StyleShee
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
 import { Actions } from 'react-native-router-flux'
 import { getWritings } from '../../services/writings';
-import CardView from 'react-native-cardview'
+import CardView from 'react-native-cardview';
+import { map, is } from 'ramda';
+
 const ScannerQR = () => {
     const [ qrvalue, setQrvalue ] = useState('');
     const [ opneScanner, setOpneScanner ] = useState(false);
     const [ addresse, setAddress ] = useState('');
-    const [ dataLetter, setDataLetter ] = useState({});
+    const [ dataLetter, setDataLetter ] = useState([]);
  
      const reducers = useSelector(state => state);
      const token = reducers.authReducer.token;
@@ -17,21 +19,26 @@ const ScannerQR = () => {
 
    const onOpenlink = async () => {
     //Function to open URL, If scanned      
-    Actions.writing(dataLetter);
+    Actions.letter(dataLetter);
 
     }
     const onBarcodeScan = async (qrvalue) => {
       if(qrvalue.search('writings?')){
         const index = qrvalue.search('id=');
         const id = parseInt(qrvalue.slice(index+3));
-        console.log(qrvalue.slice(index+3));
+        // console.log(qrvalue.slice(index+3));
         const writing = await getWritings(
             token,
-            {id} 
+            // {id}
+            {letterId: id}
         );
         if (writing.ok){
-          console.log(writing.data.data.lettersWritings.addresse);
-          setAddress(writing.data.data.lettersWritings.addresse)
+          console.log(writing.data.data);
+
+          map((l) => {
+            setAddress(l.lettersWritings.addresse);
+          },writing.data.data); 
+          
           setOpneScanner(false);
           setQrvalue(qrvalue);
           setDataLetter(writing.data.data);
