@@ -3,10 +3,9 @@ import { View, Text, StyleSheet, FlatList,  Alert} from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
-import Header from './Header';
 import ListItem from './ListLetters';
 import AddItem from './AddItem';
-import ModalConfig from './ModalConfig';
+
 
 const Letters = () => {
 
@@ -40,13 +39,7 @@ const Letters = () => {
   
     return(
       <View style= {style.container}>
-        <Header 
-          title = {'Lista de Cartas'}
-          onPressButton = {setIsVisibleModal}
-          />
-        <ModalConfig isVisible= {isVisebleModal}
-          setIsVisible = {setIsVisibleModal}
-          />
+        
           <FlatList 
             data = {items}
             renderItem = {({item}) => (

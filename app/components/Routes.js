@@ -54,20 +54,21 @@ const Routes = () => {
                   title = "Inicio" 
                   />
                <Scene key = "scannerQr" 
+                  navBar ={Header}
                   component = {ScannerQR} 
-                  title = "Scanner QR"   
-                  hideNavBar={true}
+                  title = "Escaner QR"   
+                  // hideNavBar={true}
                   icon = {ScannerTab}
                   />
                <Scene key = "letters" 
                   component = {Letters} 
-                  title = "Letters"  
-                  hideNavBar={true}
+                  title = "Tus Cartas" 
+                  navBar ={Header} 
+                  // hideNavBar={true}
                   icon = {CreateTab}
                   />
 
          </Scene>
-
             
             <Scene key = "writing" 
                component = {Writing} 
@@ -79,8 +80,14 @@ const Routes = () => {
                title = "Cartas"  
                hideNavBar={true}
                />
-            <Scene key = "login" component = {Login} title = "Login" initial = {!hasToken}/>
-            <Scene key = "register" component = {Register} title = "Register"/>
+            <Scene key = "login" 
+               component = {Login} 
+               title = "Login" 
+               initial = {!hasToken}
+               />
+            <Scene key = "register" 
+               component = {Register} 
+               title = "Register"/>
          </Scene>
       </Router>
     );
