@@ -3,15 +3,19 @@ import {AsyncStorage,StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import { Router, Scene } from 'react-native-router-flux';
 import SplashScreen from 'react-native-splash-screen';
-import {user,authenticateAction} from '../redux/actions'
+import {
+   user,
+   authenticateAction,
+   getWriting
+} from '../redux/actions'
 import HomeTab from './HomeTab';
 import ScannerTab from './ScannerTab';
 import CreateTab from './CreateTab';
-import Letters from './Letters';
+import MyLetters from '../screens/MyLetters';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import ScannerQR from '../screens/ScannerQR';
-import  Writing  from '../screens/Writing'
+import Writing  from '../screens/Writing'
 import Letter from '../screens/Letter';
 import Home from '../screens/Home'
 import Header from './Header';
@@ -19,24 +23,27 @@ import Header from './Header';
 
 const Routes = () => {
    const dispatch = useDispatch();
-   const [hasToken, setHasToken ] = useState(false);
-   useEffect(() =>{
-      async function getToken() {
-        await AsyncStorage.getItem('token')
+    const [hasToken, setHasToken ] = useState(false);
+
+    useEffect(() => {
+
+       async function getToken() {
+       const token = await AsyncStorage.getItem('token')
          .then((token) => {
             setHasToken(token !== null? true : false);
             dispatch(authenticateAction(token))
-            SplashScreen.hide();        
-            console.log(token); 
+            SplashScreen.hide(); 
+            return token  
          } )
          .catch((error) => {console.log(error.message)})
-         const id = await AsyncStorage.getItem('id_user');
+         const id = await AsyncStorage.getItem('id_user'); 
          dispatch(user(id));
+         getWriting(token,dispatch,{userId : id});
+         
       }
-    getToken()
-      
-   },[]);
-   
+      getToken()
+      },[]
+    );
     return(
       <Router>
          <Scene 
@@ -60,8 +67,8 @@ const Routes = () => {
                   // hideNavBar={true}
                   icon = {ScannerTab}
                   />
-               <Scene key = "letters" 
-                  component = {Letters} 
+               <Scene key = "MyLetters" 
+                  component = {MyLetters} 
                   title = "Tus Cartas" 
                   navBar ={Header} 
                   // hideNavBar={true}

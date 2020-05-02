@@ -1,24 +1,30 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { View, Text, StyleSheet, FlatList,  Alert} from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
-import ListItem from './ListLetters';
-import AddItem from './AddItem';
+import ListItem from '../../components/ListLetters';
+import AddItem from '../../components/AddItem';
+import { getWriting } from '../../redux/actions'
 
 
 const Letters = () => {
 
-    const letter = useSelector(state => state);
-    console.log(letter);
-    const [ isVisebleModal, setIsVisibleModal] = useState(false);
+    const reducer = useSelector(state => state);
+    console.log(reducer);
+    const dispatch = useDispatch();
+
+    // const token = reducer.authReducer.token;
+    // const id = reducer.authReducer.user;
     
-    const [items, setItems] = useState([
-      {id:  uuidv4(), text: "letter 1"},
-      {id:  uuidv4(), text: "letter 2"},
-      {id:  uuidv4(), text: "letter 3"},
-      {id:  uuidv4(), text: "letter 4"},
-    ]);
+    
+    
+    const [items, setItems] = useState([]);
+
+  useEffect(() => {
+     console.log(reducer.writingReducer.writings);
+      setItems(reducer.writingReducer.writings)
+  },reducer.writingReducer.writings)
   
     const deleteItem = (id) =>{
       setItems (prevItems => {

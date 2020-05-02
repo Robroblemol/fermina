@@ -1,4 +1,4 @@
-import ACTION_TYPES from '../actionsType'
+import ACTION_TYPES from '../actionsTypes'
 
 const initialState = {
     token: null,
