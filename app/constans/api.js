@@ -3,6 +3,7 @@ export default {
 		auth: '/login',
 		register: '/register',
 		writings: '/writings',
-		like:'/likesWriting'
+		like:'/likesWriting',
+		letter:'/letters',
 	}
 };

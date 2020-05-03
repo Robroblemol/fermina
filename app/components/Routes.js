@@ -6,7 +6,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {
    user,
    authenticateAction,
-   getWriting
+   actionGetWriting,
+   getLetterAction,
 } from '../redux/actions'
 import HomeTab from './HomeTab';
 import ScannerTab from './ScannerTab';
@@ -38,8 +39,8 @@ const Routes = () => {
          .catch((error) => {console.log(error.message)})
          const id = await AsyncStorage.getItem('id_user'); 
          dispatch(user(id));
-         getWriting(token,dispatch,{userId : id});
-         
+         actionGetWriting(token,dispatch,{userId : id});
+         getLetterAction(token,dispatch,{userId : id});
       }
       getToken()
       },[]

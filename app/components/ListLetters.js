@@ -2,13 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
 
-const ListLetters = ({item, deleteItem}) => {
+const ListLetters = ({item, deleteItem, openLetter}) => {
 
+  console.log(item);
+  
   return(
-    <TouchableOpacity style= {styles.listItem}>
+    <TouchableOpacity style= {styles.listItem}
+      onPress = {() => openLetter(item.id)}
+    >
     
       <View style= {styles.listItemView}>
-        <Text style = {styles.listItemText}>{item.text}</Text>
+        <Text style = {styles.listItemText}>Para: {item.addresse}</Text>
         <Icon 
             name="trash" 
             size= {20} 

@@ -3,9 +3,21 @@ import { View, Text, StyleSheet, FlatList,  Alert} from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
+import { map } from 'ramda';
+import { Actions } from 'react-native-router-flux'
 import ListItem from '../../components/ListLetters';
 import AddItem from '../../components/AddItem';
-import { getWriting } from '../../redux/actions'
+import { 
+  createLetterAction,
+  updateLetterAction,
+  deleteLetterAction, 
+  createWritingsAction,
+  updateWritingsAction,
+  deleteWritingsAction,
+
+
+} from '../../redux/actions'
+
 
 
 const Letters = () => {
@@ -19,17 +31,36 @@ const Letters = () => {
     
     
     
-    const [items, setItems] = useState([]);
+    const [letters, setLetters] = useState([]);
+    const [writings, setWritings] = useState([]);
+    const [ dataLetter, setDataLetter ] = useState([]);
 
   useEffect(() => {
-     console.log(reducer.writingReducer.writings);
-      setItems(reducer.writingReducer.writings)
-  },reducer.writingReducer.writings)
+    setLetters(reducer.letterReducer.letters);
+    setWritings(reducer.writingReducer.writings)
+  },reducer.letterReducer.letters)
   
     const deleteItem = (id) =>{
-      setItems (prevItems => {
+      setLetters (prevItems => {
         return prevItems.filter(item => item.id != id);
       });
+    }
+
+    const openLetter = (id) =>{
+      console.log(letters);
+      console.log(writings);
+      console.log(id);
+      
+      map((w)=>{
+        if(w.letterId == id){
+          setDataLetter(w)
+          console.log('si hay cartas');
+          
+        }else{
+          console.log('no hay cartas');
+        }
+      },writings)
+      Actions.letter(dataLetter);
     }
   
     const addItem = (text) =>{
@@ -47,10 +78,11 @@ const Letters = () => {
       <View style= {style.container}>
         
           <FlatList 
-            data = {items}
+            data = {letters}
             renderItem = {({item}) => (
               <ListItem 
               item = {item}
+              openLetter = {openLetter}
               deleteItem= {deleteItem}/>
   
             )}

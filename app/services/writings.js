@@ -3,7 +3,7 @@ import constants from '../constans/api';
 
 export const getWritings = (token,data) => 
     api('Bearer '+token).get(constants.endpoints.writings,{...data});
-export const updateWritings = (token,data) => 
+export const updateWriting = (token,data) => 
     api('Bearer '+token).put(constants.endpoints.writings,{...data});
 export const createWriting = (token,data) => 
         api('Bearer '+token).post(constants.endpoints.writings,{...data});
