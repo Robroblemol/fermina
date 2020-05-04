@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         height: WIDTH,
         margin:5,
         paddingLeft: 10,
+        fontSize: 20,
         color: 'chocolate',
         borderColor: 'chocolate',
         borderWidth: 1,
