@@ -47,20 +47,23 @@ const Letters = () => {
     }
 
     const openLetter = (id) =>{
-      console.log(letters);
-      console.log(writings);
-      console.log(id);
+      // console.log(letters);
+      // console.log(writings);
+      // console.log(id);
       
       map((w)=>{
         if(w.letterId == id){
           setDataLetter(w)
           console.log('si hay cartas');
+          console.log(w);
+          
           
         }else{
           console.log('no hay cartas');
         }
       },writings)
-      Actions.letter(dataLetter);
+      Actions.letter({data:dataLetter});
+      
     }
   
     const addItem = (text) =>{

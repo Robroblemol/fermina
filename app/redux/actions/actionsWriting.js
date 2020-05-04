@@ -1,7 +1,7 @@
 import {
     getWritings,
     updateWritings,
-    createWritings,
+    createWriting,
     deleteWriting
 } from '../../services/writings'
 
@@ -30,17 +30,15 @@ export async function actionGetWriting(token,dispatch,data) {
         return response.data
     
 }
-export function actionCreateWritings(token,writings) {
-    return async dispatch => {
+export async function actionCreateWritings(token,dispatch,writings) {
+    
         dispatch(setWritingLoading());
-        const response = await writingService.
-            createWritings(token, writings);
+        const response = await createWriting(token, writings);
         if(response.ok){
             dispatch(refreshWritings());
             dispatch(setWritingLoading());
         }
         return response;
-    };
 }
 export function actionUpdateWritings(token,writings) {
     return async dispatch => {

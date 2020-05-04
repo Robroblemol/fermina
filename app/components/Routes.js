@@ -86,7 +86,6 @@ const Routes = () => {
              <Scene key = "letter" 
                component = {Letter} 
                title = "Cartas"  
-               hideNavBar={true}
                />
             <Scene key = "login" 
                component = {Login} 
