@@ -267,7 +267,7 @@ app.delete('/letters',passport.authenticate('jwt', { session: false }) ,function
 
 app.post('/writings', passport.authenticate('jwt', { session: false }), function(req,res){
    
-   writings.create(req.query).then(result => {
+   writings.create(req.body).then(result => {
       console.log(result);
       res.status(result.code).send(result);
 
