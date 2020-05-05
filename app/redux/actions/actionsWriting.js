@@ -23,7 +23,7 @@ export async function actionGetWriting(token,dispatch,data) {
         dispatch(setWritingLoading());
         const response = await getWritings(token,data);
         
-        if(response.ok){         
+        if(response.ok){   
             dispatch(setWriting(response.data.data));
             dispatch(setWritingLoading());
         }
@@ -31,20 +31,21 @@ export async function actionGetWriting(token,dispatch,data) {
     
 }
 export async function actionCreateWritings(token,dispatch,writings) {
-    
+        
         dispatch(setWritingLoading());
         const response = await createWriting(token, writings);
         if(response.ok){
             dispatch(refreshWritings());
             dispatch(setWritingLoading());
+            return true;
+        }else{
+            return false;
         }
-        return response;
 }
 export function actionUpdateWritings(token,writings) {
     return async dispatch => {
         dispatch(setWritingLoading());
-        const response = await writingService.
-            updateWritings(token, writings);
+        const response = await updateWritings(token, writings);
         if(response.ok){
             dispatch(refreshWritings());
             dispatch(setWritingLoading());
@@ -55,8 +56,7 @@ export function actionUpdateWritings(token,writings) {
 export function actionDeleteWritings(token,writings) {
     return async dispatch => {
         dispatch(setWritingLoading());
-        const response = await writingService.
-            deleteWriting(token, writings);
+        const response = await deleteWriting(token, writings);
         if(response.ok){
             dispatch(refreshWritings());
             dispatch(setWritingLoading());

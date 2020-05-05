@@ -65,7 +65,6 @@ const ModalCreateWriting = ({isVisible, setIsVisible, setNewWriting}) => {
                         style= {styles.firma}
                         placeholder = 'Firma'
                         placeholderTextColor = 'chocolate'
-                        autoFocus ={ true }
                         underlineColorAndroid = 'transparent'
                         onChangeText = {(textVale) => setTextMailer(textVale)}
                     />  
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
       },
       body:{
         height: WIDTH,
-        margin:5,
+        margin:15,
         paddingLeft: 10,
         fontSize: 20,
         color: 'chocolate',

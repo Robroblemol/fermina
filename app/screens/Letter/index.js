@@ -1,16 +1,79 @@
-import React, {useState} from 'react';
-import { Text, FlatList, View, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { 
+    Text, 
+    FlatList, 
+    View, 
+    TouchableOpacity, 
+    StyleSheet, 
+    Alert,
+    ActivityIndicator,
+} from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
-import { map } from 'ramda'
+import {useDispatch, useSelector} from 'react-redux';
+import { map, concat } from 'ramda'
+import { actionCreateWritings } from '../../redux/actions';
 import ListWriting from '../../components/ListWriting'
 import ModalCreateWriting from '../../components/ModalCreateWriting'
 
-const Letter = (letters) => {
-    const [ showModal, setShowModal ]=useState(false);
-    console.log('Letter!!!!!!!!!!!!!!!11');
+const Letter = (letter) => {
+    const [ showModal, setShowModal ] = useState(false);
+    const [ dataLetter, setDataLetter ] = useState([]);
+    const reducer = useSelector(state => state);
+    const dispatch = useDispatch();
+    const [showSpinner, setShowSpinner]=useState(false);
+    const token = reducer.authReducer.token ;
+    // const [ letterId, setLetterId ] = useState('')
+    //  console.log('Letter!!!!!!!!!!!!!!!11');
     
-    console.log(letters);
+    // // console.log(letters);
+    // console.log('reducer!!!!!!!!!!!!!!!11');
+    // console.log(reducer.writingReducer);
+
+    useEffect(() =>{
+        console.log('algo paso!');
+        console.log(letter.letterId);
+        setDataLetter([]);
+        setShowSpinner(reducer.writingReducer.isLoading)
+        map((w)=>{
+            // console.log(w.letterId);
+            
+            if(w.letterId == letter.letterId){
+                console.log('chiga!');
+                
+                setDataLetter(dataLetter =>{
+                    console.log(dataLetter);
+                    
+                    return concat(dataLetter,[w]);
+                })
+            }
+        },reducer.writingReducer.writings);
+        console.log(dataLetter);
+        
+    },reducer.writingReducer.writings)
+
+    const createWriting = (dataWriting) =>{
+        const newWriting = {
+            userId:reducer.authReducer.user,
+            letterId:letter.letterId,
+            ...dataWriting,
+        }
+        const response = actionCreateWritings(
+            token,
+            dispatch,
+            newWriting
+            );
+        console.log(response);
+        
+        if(response == true){
+            setShowModal(false);
+
+        }else{
+            Alert.alert('Error','No se pudo crear escrito :(',[{text: 'ok'}])
+        }
+
+        
+    }
 
     const openWriting = (id) =>{
         console.log(id);
@@ -18,7 +81,7 @@ const Letter = (letters) => {
             if(w.id == id){
                 Actions.writing(w);
             }     
-          },letters.data)
+          },dataLetter)
         
     }
     const setLike = (id) =>{
@@ -28,7 +91,7 @@ const Letter = (letters) => {
     return (
         <View style={styles.container}>
             <FlatList
-                data = {letters.data}
+                data = {dataLetter}
                 renderItem = {({item}) => (
                     <ListWriting 
                         id = {item.id}
@@ -52,7 +115,11 @@ const Letter = (letters) => {
         <ModalCreateWriting
             setIsVisible={setShowModal}
             isVisible={showModal}
+            setNewWriting={createWriting}
         />
+        {
+           showSpinner==true? <ActivityIndicator size="large" color="#chocolate" />:null
+        }
         </View>
     )
 }

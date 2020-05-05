@@ -3,30 +3,41 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, TouchableHighlight, PermissionsAndroid, Platform, StyleSheet, Alert} from 'react-native';
 import { CameraKitCameraScreen, } from 'react-native-camera-kit';
 import { Actions } from 'react-native-router-flux'
+import { actionGetWriting } from '../../redux/actions'
 import { getWritings } from '../../services/writings';
 import CardView from 'react-native-cardview';
-import { map, is } from 'ramda';
+import { map } from 'ramda';
 
 const ScannerQR = () => {
     const [ qrvalue, setQrvalue ] = useState('');
     const [ opneScanner, setOpneScanner ] = useState(false);
     const [ addresse, setAddress ] = useState('');
+    const [ id, setId ] = useState();
     const [ dataLetter, setDataLetter ] = useState([]);
- 
+    const dispatch = useDispatch();
      const reducers = useSelector(state => state);
      const token = reducers.authReducer.token;
     console.log(token);
 
    const onOpenlink = async () => {
     //Function to open URL, If scanned      
-    Actions.letter(dataLetter);
+    Actions.letter({letterId:id});
 
     }
     const onBarcodeScan = async (qrvalue) => {
       if(qrvalue.search('writings?')){
         const index = qrvalue.search('id=');
-        const id = parseInt(qrvalue.slice(index+3));
-        // console.log(qrvalue.slice(index+3));
+        setId(parseInt(qrvalue.slice(index+3)));
+        
+        const writing2 = actionGetWriting(
+          token,
+          dispatch,
+          {letterId: id}
+        )
+        console.log('writing2');
+        
+        console.log(writing2);
+        
         const writing = await getWritings(
             token,
             // {id}
