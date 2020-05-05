@@ -33,7 +33,7 @@ const Letters = () => {
     
     const [letters, setLetters] = useState([]);
     const [writings, setWritings] = useState([]);
-    const [ dataLetter, setDataLetter ] = useState([]);
+    const [ dataLetter, setDataLetter ] = useState();
 
   useEffect(() => {
     setLetters(reducer.letterReducer.letters);
@@ -48,21 +48,20 @@ const Letters = () => {
 
     const openLetter = (id) =>{
       // console.log(letters);
-      // console.log(writings);
-      // console.log(id);
+        console.log(writings);
+       console.log(id);
       
       map((w)=>{
         if(w.letterId == id){
-          setDataLetter(w)
           console.log('si hay cartas');
-          console.log(w);
+          console.log(id);
+          Actions.letter({letterId:id});
           
           
         }else{
           console.log('no hay cartas');
         }
       },writings)
-      Actions.letter({data:dataLetter});
       
     }
   
@@ -84,6 +83,7 @@ const Letters = () => {
             data = {letters}
             renderItem = {({item}) => (
               <ListItem 
+              id={item.id}
               item = {item}
               openLetter = {openLetter}
               deleteItem= {deleteItem}/>

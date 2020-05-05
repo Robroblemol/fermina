@@ -32,7 +32,7 @@ const Letter = (letter) => {
 
     useEffect(() =>{
         console.log('algo paso!');
-        console.log(letter.letterId);
+        console.log(letter);
         setDataLetter([]);
         setShowSpinner(reducer.writingReducer.isLoading)
         map((w)=>{
@@ -58,12 +58,12 @@ const Letter = (letter) => {
             letterId:letter.letterId,
             ...dataWriting,
         }
-        const response = actionCreateWritings(
+        actionCreateWritings(
             token,
             dispatch,
             newWriting
             );
-        console.log(response);
+        
         
         if(reducer.writingReducer.refresh == true){
             actionGetWriting(
