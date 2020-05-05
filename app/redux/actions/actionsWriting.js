@@ -33,14 +33,17 @@ export async function actionGetWriting(token,dispatch,data) {
 export async function actionCreateWritings(token,dispatch,writings) {
         
         dispatch(setWritingLoading());
-        const response = await createWriting(token, writings);
-        if(response.ok){
-            dispatch(refreshWritings());
-            dispatch(setWritingLoading());
-            return true;
-        }else{
-            return false;
-        }
+        await createWriting(token, writings).then(
+            (response)=>{
+                if(response.ok){
+                    dispatch(refreshWritings());
+                    dispatch(setWritingLoading());
+                    return true;
+                }else{
+                    return false;
+                }
+
+            });
 }
 export function actionUpdateWritings(token,writings) {
     return async dispatch => {
