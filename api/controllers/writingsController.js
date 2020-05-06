@@ -86,7 +86,7 @@ exports.getAllByUser = async (id) => {
                 exclude: ['createdAt', 'updatedAt'] },
                 through: { attributes: [] },
                 // include: 'lettersWritings',
-                include: 'onwer',
+                include: ['lettersWritings','likes'],
         }).then(writings => {
             data = writings.map((d) => {
                 return d.dataValues;

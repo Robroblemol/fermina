@@ -15,7 +15,7 @@ import {
   import { map } from 'ramda'
 
   const Writing = (writing) => {
-    console.log(writing.likes);
+    console.log(writing);
     const reducers = useSelector(state => state);
     const token = reducers.authReducer.token;
     const userId = reducers.authReducer.user;

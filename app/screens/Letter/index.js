@@ -23,16 +23,18 @@ const Letter = (letter) => {
     const dispatch = useDispatch();
     const [showSpinner, setShowSpinner]=useState(false);
     const token = reducer.authReducer.token ;
+    const id = reducer.authReducer.user 
     // const [ letterId, setLetterId ] = useState('')
     //  console.log('Letter!!!!!!!!!!!!!!!11');
     
-    // // console.log(letters);
-    // console.log('reducer!!!!!!!!!!!!!!!11');
-    // console.log(reducer.writingReducer);
+    // console.log(letters);
+    console.log('reducer!!!!!!!!!!!!!!!11');
+    console.log(reducer.writingReducer);
 
     useEffect(() =>{
         console.log('algo paso!');
-        console.log(letter);
+        // actionGetWriting(token,dispatch,{userId : id});
+        // console.log(letter);
         setDataLetter([]);
         setShowSpinner(reducer.writingReducer.isLoading)
         map((w)=>{
@@ -42,7 +44,6 @@ const Letter = (letter) => {
                 console.log('chiga!');
                 
                 setDataLetter(dataLetter =>{
-                    console.log(dataLetter);
                     
                     return concat(dataLetter,[w]);
                 })
@@ -81,9 +82,14 @@ const Letter = (letter) => {
     }
 
     const openWriting = (id) =>{
+        console.log('openWriting');
         console.log(id);
+        console.log(dataLetter);
+        
         map((w) =>{
             if(w.id == id){
+                console.log(w);
+                
                 Actions.writing(w);
             }     
           },dataLetter)

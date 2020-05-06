@@ -8,12 +8,8 @@ import { Actions } from 'react-native-router-flux'
 import ListItem from '../../components/ListLetters';
 import AddItem from '../../components/AddItem';
 import { 
-  createLetterAction,
-  updateLetterAction,
-  deleteLetterAction, 
-  createWritingsAction,
-  updateWritingsAction,
-  deleteWritingsAction,
+  actionGetWriting
+
 
 
 } from '../../redux/actions'
@@ -23,19 +19,24 @@ import {
 const Letters = () => {
 
     const reducer = useSelector(state => state);
+    console.log('letters!!!!!!!1');
+    
     console.log(reducer);
     const dispatch = useDispatch();
 
-    // const token = reducer.authReducer.token;
-    // const id = reducer.authReducer.user;
+    const token = reducer.authReducer.token;
+    const userId = reducer.authReducer.user;
     
     
     
     const [letters, setLetters] = useState([]);
     const [writings, setWritings] = useState([]);
-    const [ dataLetter, setDataLetter ] = useState();
+    
 
   useEffect(() => {
+    console.log('my letters');
+    
+    actionGetWriting(token,dispatch,{userId});
     setLetters(reducer.letterReducer.letters);
     setWritings(reducer.writingReducer.writings)
   },reducer.letterReducer.letters)

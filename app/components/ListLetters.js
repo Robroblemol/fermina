@@ -16,7 +16,7 @@ const ListLetters = ({item, deleteItem, openLetter}) => {
         <Icon 
             name="trash" 
             size= {20} 
-            color="firebrick"
+            color="chocolate"
             onPress={() => deleteItem(item.id)}/>
       </View>
     
