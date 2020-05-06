@@ -1,3 +1,4 @@
+import { concat, map } from 'ramda';
 import {
     getWritings,
     updateWritings,
@@ -22,13 +23,24 @@ export async function actionGetWriting(token,dispatch,data) {
     
         dispatch(setWritingLoading());
         const response = await getWritings(token,data);
-        
-        if(response.ok){   
+        if(response.ok){  
             dispatch(setWriting(response.data.data));
             dispatch(setWritingLoading());
         }
         return response.data
     
+}
+export async function actionAddWriting(token,dispatch,data,writings) {
+    
+    dispatch(setWritingLoading());
+    const response = await getWritings(token,data); 
+    if(response.ok){ 
+        
+        dispatch(setWriting(concat(response.data.data,writings)));
+        dispatch(setWritingLoading());
+    }
+    return response.data
+
 }
 export async function actionCreateWritings(token,dispatch,writings) {
         

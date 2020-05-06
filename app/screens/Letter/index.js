@@ -25,11 +25,10 @@ const Letter = (letter) => {
     const token = reducer.authReducer.token ;
     const id = reducer.authReducer.user 
     // const [ letterId, setLetterId ] = useState('')
-    //  console.log('Letter!!!!!!!!!!!!!!!11');
-    
-    // console.log(letters);
-    console.log('reducer!!!!!!!!!!!!!!!11');
-    console.log(reducer.writingReducer);
+    // console.log('Letter!!!!!!!!!!!!!!!11');
+    // console.log(letter);
+    // console.log('reducer!!!!!!!!!!!!!!!11');
+    // console.log(reducer);
 
     useEffect(() =>{
         console.log('algo paso!');
@@ -41,14 +40,16 @@ const Letter = (letter) => {
             // console.log(w.letterId);
             
             if(w.letterId == letter.letterId){
-                console.log('chiga!');
+                // console.log('chiga!');
                 
                 setDataLetter(dataLetter =>{
                     
                     return concat(dataLetter,[w]);
                 })
             }
-        },reducer.writingReducer.writings);
+        },letter.isScanned ? 
+            reducer.scannedWritingReducer.scannedWritings:
+            reducer.writingReducer.writings);
         console.log(dataLetter);
         
     },reducer.writingReducer.writings)
@@ -82,10 +83,6 @@ const Letter = (letter) => {
     }
 
     const openWriting = (id) =>{
-        console.log('openWriting');
-        console.log(id);
-        console.log(dataLetter);
-        
         map((w) =>{
             if(w.id == id){
                 console.log(w);
