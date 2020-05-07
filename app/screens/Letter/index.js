@@ -30,26 +30,34 @@ const Letter = (letter) => {
 
     useEffect(() =>{
         console.log('algo paso!');
-        // actionGetWriting(token,dispatch,{userId : id});
-        // console.log(letter);
+
+        if(reducer.writingReducer.refresh && !reducer.writingReducer.isLoading){
+            actionGetWriting(
+                token,
+                dispatch,
+                {letterId:letter.letterId}
+              )
+              setShowModal(false);
+
+        }
         setDataLetter([]);
-        map((w)=>{
-            // console.log(w.letterId);
-            
-            if(w.letterId == letter.letterId){
-                // console.log('chiga!');
+            map((w)=>{
+                // console.log(w.letterId);
                 
-                setDataLetter(dataLetter =>{
+                if(w.letterId == letter.letterId){
+                    // console.log('chiga!');
                     
-                    return concat(dataLetter,[w]);
-                })
-            }
-        },letter.isScanned ? 
-            reducer.scannedWritingReducer.scannedWritings:
-            reducer.writingReducer.writings);
-        console.log(dataLetter);
+                    setDataLetter(dataLetter =>{
+                        
+                        return concat(dataLetter,[w]);
+                    })
+                }
+            },letter.isScanned ? 
+                reducer.scannedWritingReducer.scannedWritings:
+                reducer.writingReducer.writings);
+            console.log(dataLetter);
         
-    },reducer.writingReducer.writings)
+    },[reducer.writingReducer])
 
     const createWriting = (dataWriting) =>{
         const newWriting = {
@@ -62,20 +70,6 @@ const Letter = (letter) => {
             dispatch,
             newWriting
             );
-        
-        
-        if(reducer.writingReducer.refresh == true){
-            actionGetWriting(
-                token,
-                dispatch,
-                {letterId:letter.letterId}
-              )
-            setShowModal(false);
-
-        }else{
-            Alert.alert('Error','No se pudo crear escrito :(',[{text: 'ok'}])
-        }
-
         
     }
 
