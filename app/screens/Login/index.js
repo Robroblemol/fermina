@@ -46,7 +46,7 @@ const Login = () => {
       dispatch(authenticateAction(auth.data.token));
       saveItem('id_user',String(auth.data.id_user));
       saveItem('token',auth.data.token);
-      Actions.letters();
+      Actions.home();
     } else {
       console.log(auth);
       Alert.alert('Error',auth.problem,[{text: 'ok'}])

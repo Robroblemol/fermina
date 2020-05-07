@@ -12,7 +12,7 @@ import { Actions } from 'react-native-router-flux'
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import { map, concat } from 'ramda'
-import { actionCreateWritings, actionGetWriting } from '../../redux/actions';
+import { actionCreateWritings, actionGetWriting, getScannedWriting } from '../../redux/actions';
 import ListWriting from '../../components/ListWriting'
 import ModalCreateWriting from '../../components/ModalCreateWriting'
 
@@ -36,8 +36,15 @@ const Letter = (letter) => {
                 token,
                 dispatch,
                 {letterId:letter.letterId}
-              )
-              setShowModal(false);
+            )
+            if(letter.isScanned){
+                getScannedWriting(
+                    token,
+                    dispatch,
+                    {letterId:letter.letterId}
+                    )
+                }
+            setShowModal(false);
 
         }
         setDataLetter([]);
