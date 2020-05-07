@@ -21,9 +21,7 @@ const Letter = (letter) => {
     const [ dataLetter, setDataLetter ] = useState([]);
     const reducer = useSelector(state => state);
     const dispatch = useDispatch();
-    const [showSpinner, setShowSpinner]=useState(false);
     const token = reducer.authReducer.token ;
-    const id = reducer.authReducer.user 
     // const [ letterId, setLetterId ] = useState('')
     // console.log('Letter!!!!!!!!!!!!!!!11');
     // console.log(letter);
@@ -35,7 +33,6 @@ const Letter = (letter) => {
         // actionGetWriting(token,dispatch,{userId : id});
         // console.log(letter);
         setDataLetter([]);
-        setShowSpinner(reducer.writingReducer.isLoading)
         map((w)=>{
             // console.log(w.letterId);
             
@@ -125,9 +122,6 @@ const Letter = (letter) => {
             isVisible={showModal}
             setNewWriting={createWriting}
         />
-        {
-           showSpinner==true? <ActivityIndicator size="large" color="#chocolate" />:null
-        }
         </View>
     )
 }

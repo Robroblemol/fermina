@@ -48,22 +48,7 @@ const Letters = () => {
     }
 
     const openLetter = (id) =>{
-      // console.log(letters);
-        console.log(writings);
-       console.log(id);
-      
-      map((w)=>{
-        if(w.letterId == id){
-          console.log('si hay cartas');
-          console.log(id);
-          Actions.letter({letterId:id});
-          
-          
-        }else{
-          console.log('no hay cartas');
-        }
-      },writings)
-      
+      Actions.letter({letterId:id});       
     }
   
     const addItem = (text) =>{
