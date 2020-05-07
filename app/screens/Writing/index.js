@@ -75,7 +75,6 @@ import {
           <Text style={styles.firma}>
             De: {writing.mailer}
           </Text>
-        </ScrollView>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={hadleLike}
@@ -87,6 +86,7 @@ import {
               />
 
           </TouchableOpacity>
+        </ScrollView>
 
       </SafeAreaView>
     );
@@ -125,12 +125,9 @@ import {
       fontStyle: 'italic',
     },
     TouchableOpacityStyle: {
-      position: 'absolute',
-      width: 50,
-      height: 50,
-      alignItems: 'center',
-      justifyContent: 'center',
-      right: 30,
+      paddingTop:20,
+      paddingBottom:35,     
+      left: 250,
       bottom: 30,
     },
     FloatingButtonStyle: {
