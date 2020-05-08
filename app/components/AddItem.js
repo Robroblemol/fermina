@@ -1,21 +1,33 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput,CheckBox} from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
 
-const AddItem = ({addItem}) => {
-  const [ text, setText] = useState();
-  const onChange = (textValue) => setText(textValue);
+const AddItem = ({addItem, userId}) => {
+  const [ addresse, setAddresse] = useState('');
+  const [isSelected, setSelection] = useState(false);
+  const [ type, setType ] =useState('public');
+  const onValueChangeCheckBox = value =>{
+    console.log(value);
+    setSelection(false)
+    
+  }
   return(
     
     <View style= {styles.listItemView}>
        <TextInput 
         placeholder = {"Add item..."}
         style = {styles.input}
-        onChangeText = {onChange}
+        onChangeText = {(textValue) => setAddresse(textValue)}
         />
+        {/* <CheckBox
+          value={isSelected}
+          onValueChange={onValueChangeCheckBox}
+          // style={styles.checkbox}
+        /> */}
         <TouchableOpacity 
           style= {styles.btn}
-          onPress = {()=>addItem(text)}>
+          onPress = {()=>addItem({userId,addresse,type})}>
           <Text style = {styles.btnText}>
               <Icon name = "plus" size={20}/>
                Crear una carta

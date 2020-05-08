@@ -13,7 +13,7 @@ export const setLetterLoading = () =>({
     type: 'SET_LETTERS_LOADING',
 });
 export const refreshLetters = () =>({
-    type:'REFREH_LETERS'
+    type:'REFREH_LETTERS'
 });
 
 export async function getLetterAction(token,dispatch,data) {
@@ -31,16 +31,15 @@ export async function getLetterAction(token,dispatch,data) {
 
 }
 
-export function createLetterAction(token,letter) {
-    return async dispatch => {
+export async function createLetterAction(token,dispatch,letter) {
         dispatch(setLetterLoading());
         const response = await createLetter(token, letter);
         if(response.ok){
-            dispatch(refreshletters());
+            dispatch(refreshLetters());
             dispatch(setLetterLoading());
         }
         return response;
-    };
+
 }
 
 export function updateLetterAction(token,Letters) {

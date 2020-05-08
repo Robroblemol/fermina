@@ -8,15 +8,16 @@ import { Actions } from 'react-native-router-flux'
 import ListItem from '../../components/ListLetters';
 import AddItem from '../../components/AddItem';
 import { 
-  actionGetWriting
-
+  actionGetWriting,
+  createLetterAction,
+  getLetterAction,
 
 
 } from '../../redux/actions'
 
 
 
-const Letters = () => {
+const MyLetters = () => {
 
     const reducer = useSelector(state => state);
     console.log('letters!!!!!!!1');
@@ -29,17 +30,20 @@ const Letters = () => {
     
     
     
-    const [letters, setLetters] = useState([]);
-    const [writings, setWritings] = useState([]);
+    // const [letters, setLetters] = useState([]);
     
 
   useEffect(() => {
-    console.log('my letters');
-    
-    actionGetWriting(token,dispatch,{userId});
-    setLetters(reducer.letterReducer.letters);
-    setWritings(reducer.writingReducer.writings)
-  },reducer.letterReducer.letters)
+    console.log('my letters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<');
+    if(reducer.letterReducer.refresh && 
+      !reducer.letterReducer.isLoading){
+        console.log('dentro');
+        
+        getLetterAction(token,dispatch,{userId})
+        actionGetWriting(token,dispatch,{userId});
+    }
+   // setLetters(reducer.letterReducer.letters);
+  },[reducer.letterReducer])
   
     const deleteItem = (id) =>{
       setLetters (prevItems => {
@@ -51,13 +55,13 @@ const Letters = () => {
       Actions.letter({letterId:id});       
     }
   
-    const addItem = (text) =>{
-      if (!text) {
+    const addItem = (data) =>{
+      console.log(data);
+      
+      if (!data.addresse) {
         Alert.alert('Error','Por Favor escribe algo',[{text: 'bueno'}])
       } else {
-        setItems(prevItems => {
-          return[{id: uuidv4(), text }, ...prevItems ]
-        })
+        createLetterAction(token,dispatch,data);
         
       }
     }
@@ -66,7 +70,7 @@ const Letters = () => {
       <View style= {style.container}>
         
           <FlatList 
-            data = {letters}
+            data = {reducer.letterReducer.letters}
             renderItem = {({item}) => (
               <ListItem 
               id={item.id}
@@ -76,7 +80,9 @@ const Letters = () => {
   
             )}
           />
-          <AddItem addItem = {addItem} />
+          <AddItem 
+            addItem = {addItem}
+            userId = {userId} />
       </View>
     );
   }
@@ -86,4 +92,4 @@ const Letters = () => {
      
     },
   })
-  export default Letters;
+  export default MyLetters;
