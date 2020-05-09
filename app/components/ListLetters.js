@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import  Icon  from 'react-native-vector-icons/dist/FontAwesome';
 
-const ListLetters = ({item, deleteItem, openLetter}) => {
+const ListLetters = ({item, deleteItem, openLetter, openQR}) => {
 
   console.log(item);
   
@@ -14,6 +14,11 @@ const ListLetters = ({item, deleteItem, openLetter}) => {
       <View style= {styles.listItemView}>
         <Text style = {styles.listItemText}>Para: {item.addresse}</Text>
         <Icon 
+            name="qrcode" 
+            size= {20} 
+            color="chocolate"
+            onPress={() => openQR(item.id)}/>
+         <Icon 
             name="trash" 
             size= {20} 
             color="chocolate"

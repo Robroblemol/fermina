@@ -137,7 +137,7 @@ const ScannerQR = () => {
             //Color can be of your choice
             frameColor={'yellow'}
             //If frame is visible then frame color
-            colorForScannerFrame={'black'}
+            colorForScannerFrame={'chocolate'}
             //Scanner Frame color
             onReadCode={event =>
                 onBarcodeScan(event.nativeEvent.codeStringValue)

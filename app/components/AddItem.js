@@ -16,6 +16,7 @@ const AddItem = ({addItem, userId}) => {
     
     <View style= {styles.listItemView}>
        <TextInput 
+        value={addresse}
         placeholder = {"Add item..."}
         style = {styles.input}
         onChangeText = {(textValue) => setAddresse(textValue)}
@@ -27,7 +28,11 @@ const AddItem = ({addItem, userId}) => {
         /> */}
         <TouchableOpacity 
           style= {styles.btn}
-          onPress = {()=>addItem({userId,addresse,type})}>
+          onPress = {()=>{
+            setAddresse('');
+            addItem({userId,addresse,type})
+            }
+            }>
           <Text style = {styles.btnText}>
               <Icon name = "plus" size={20}/>
                Crear una carta

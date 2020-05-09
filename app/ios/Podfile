@@ -56,6 +56,26 @@ target 'fermina' do
 
   pod 'react-native-camera-kit', :path => '../node_modules/react-native-camera-kit'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  pod 'react-native-get-random-values', :path => '../node_modules/react-native-get-random-values'
+
   target 'ferminaTests' do
     inherit! :complete
     # Pods for testing

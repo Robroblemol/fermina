@@ -14,19 +14,20 @@ import {
 
 
 } from '../../redux/actions'
-
+import ModalGetQR from '../../components/ModalGetQR'
 
 
 const MyLetters = () => {
 
     const reducer = useSelector(state => state);
+    const dispatch = useDispatch();
+    const [ showModalQR, setShowModalQR] = useState(false);
+    const [ idForQR, setIdForQR] =useState('');
+    const token = reducer.authReducer.token;
+    const userId = reducer.authReducer.user;
     console.log('letters!!!!!!!1');
     
     console.log(reducer);
-    const dispatch = useDispatch();
-
-    const token = reducer.authReducer.token;
-    const userId = reducer.authReducer.user;
     
     
     
@@ -54,6 +55,13 @@ const MyLetters = () => {
     const openLetter = (id) =>{
       Actions.letter({letterId:id});       
     }
+
+    const openQR = (id)=>{
+      setIdForQR(id);
+      setShowModalQR(true);
+      console.log(id);
+      
+    }
   
     const addItem = (data) =>{
       console.log(data);
@@ -76,6 +84,7 @@ const MyLetters = () => {
               id={item.id}
               item = {item}
               openLetter = {openLetter}
+              openQR= {openQR}
               deleteItem= {deleteItem}/>
   
             )}
@@ -83,6 +92,11 @@ const MyLetters = () => {
           <AddItem 
             addItem = {addItem}
             userId = {userId} />
+          <ModalGetQR
+            id={idForQR}
+            isVisible={showModalQR}
+            setIsVisible={setShowModalQR}  
+          />
       </View>
     );
   }
